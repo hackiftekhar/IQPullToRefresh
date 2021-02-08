@@ -1,0 +1,51 @@
+PODS:
+  - Alamofire (5.4.1)
+  - AlamofireImage (4.1.0):
+    - Alamofire (~> 5.1)
+  - DiffableDataSources (0.4.0):
+    - DifferenceKit/AppKitExtension (~> 1.1)
+    - DifferenceKit/UIKitExtension (~> 1.1)
+  - DifferenceKit/Core (1.1.5)
+  - DifferenceKit/UIKitExtension (1.1.5):
+    - DifferenceKit/Core
+  - IQAPIClient (1.0.3):
+    - Alamofire (~> 5)
+  - IQListKit (1.1.1):
+    - DiffableDataSources (~> 0.4.0)
+  - IQPullToRefresh (1.0.0)
+  - SwiftLint (0.42.0)
+
+DEPENDENCIES:
+  - AlamofireImage
+  - IQAPIClient
+  - IQListKit
+  - IQPullToRefresh (from `.`)
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - AlamofireImage
+    - DiffableDataSources
+    - DifferenceKit
+    - IQAPIClient
+    - IQListKit
+    - SwiftLint
+
+EXTERNAL SOURCES:
+  IQPullToRefresh:
+    :path: "."
+
+SPEC CHECKSUMS:
+  Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
+  AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
+  DiffableDataSources: 80396cec405c9b29e1e07b55c9be7d11b46c8741
+  DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
+  IQAPIClient: a51b907e8188eb0a3d0176b7a03ea5dab10134d2
+  IQListKit: 5328d89f29fb5c8a87ede1257f095d5ceeff6937
+  IQPullToRefresh: ed2a3cc9fd627ac357729df0aa2ecb62d144ff24
+  SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
+
+PODFILE CHECKSUM: 300927bccce2d6790e0d40a1a77a1390102863d1
+
+COCOAPODS: 1.10.1

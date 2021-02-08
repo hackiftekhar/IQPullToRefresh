@@ -1,0 +1,18 @@
+matrix:
+  include:
+    - language: swift
+      branches:
+          only:
+              - master
+      os: osx
+      osx_image: xcode12
+      xcode_workspace: Pull To Refresh Demo.xcworkspace
+      xcode_project: Pull To Refresh Demo.xcodeproj
+      xcode_scheme: Pull To Refresh Demo
+      before_install:
+          - sudo gem install activesupport -v 4.2.6
+          - rvm install 2.3.1
+          - rvm use 2.3.1
+          - sudo gem install cocoapods
+      script:
+        - xcodebuild -workspace "Pull To Refresh Demo.xcworkspace" -scheme "Pull To Refresh Demo" -sdk iphonesimulator
