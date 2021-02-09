@@ -37,7 +37,7 @@ public extension IQPullToRefresh {
    }
 
     var isRefreshing: Bool {
-        refreshControl.isRefreshing
+        refreshControl.refreshState == .refreshing
     }
 
     func refresh() {
@@ -52,15 +52,15 @@ public extension IQPullToRefresh {
 
         if !(refreshControl is UIRefreshControl) {
             var contentInset = scrollView.contentInset
-            contentInset.top += pullToRefereshHeight
+            contentInset.top += refreshControl.refreshHeight
 
-            refreshControl.beginRefreshing()
+            refreshControl.refreshState = .refreshing
 
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset
             }, completion: nil)
         } else {
-            refreshControl.beginRefreshing()
+            refreshControl.refreshState = .refreshing
         }
     }
 
@@ -72,15 +72,15 @@ public extension IQPullToRefresh {
 
         if !(refreshControl is UIRefreshControl) {
             var contentInset = scrollView.contentInset
-            contentInset.top -= pullToRefereshHeight
+            contentInset.top -= refreshControl.refreshHeight
 
-            refreshControl.endRefreshing()
+            refreshControl.refreshState = .none
 
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset
             }, completion: nil)
         } else {
-            refreshControl.endRefreshing()
+            refreshControl.refreshState = .none
         }
     }
 

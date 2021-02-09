@@ -30,6 +30,7 @@ class UsersViewController: UITableViewController {
 
 //        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
 
+
         refresher.enablePullToRefresh = true
 //        refresher.refreshControl.tintColor = UIColor.blue
 //        if let activityIndicator = refresher.loadMoreControl as? UIActivityIndicatorView {
@@ -40,8 +41,11 @@ class UsersViewController: UITableViewController {
 //        }
 
 
-//        let customPullToRefresh = CustomPullToRefresh()
-//        refresher.refreshControl = customPullToRefresh
+        let customPullToRefresh = CustomPullToRefresh()
+        refresher.refreshControl = customPullToRefresh
+
+        let customLoadMore = CustomPullToRefresh()
+        refresher.loadMoreControl = customLoadMore
 
 //        let newRefreshIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
 //        newRefreshIndicatorView.hidesWhenStopped = false
@@ -54,6 +58,7 @@ class UsersViewController: UITableViewController {
 //        refresher.loadMoreControl = newLoadMoreIndicatorView
 
         refreshUI(animated: false)
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -127,7 +132,8 @@ extension UsersViewController: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
                 self.models.append(contentsOf: models)
-                self.refresher.enableLoadMore = models.count != 0 && models.count.isMultiple(of: self.pageSize)
+                let gotAllRecords = models.count.isMultiple(of: self.pageSize)
+                self.refresher.enableLoadMore = models.count != 0 && gotAllRecords
                 self.refreshUI()
             case .failure:
                 break

@@ -9,13 +9,45 @@ import UIKit
 import IQPullToRefresh
 
 class CustomPullToRefresh: UILabel, IQAnimatableRefresh {
+    var refreshHeight: CGFloat {
+        return 100
+    }
+
+    var refreshState: IQAnimatableRefreshState = .none {
+        didSet {
+            guard refreshState != oldValue else {
+                return
+            }
+
+            switch refreshState {
+            case .none:
+                alpha = 0
+            case .pulling(let progress):
+                alpha = progress
+                text = NSString(format: "Pull progress... %.0f%%", progress*100) as String
+                progressView.progress = Float(progress)
+                print("Progress: \(progress)")
+            case .eligible:
+                alpha = 1
+                text = "Release to refresh..."
+                progressView.progress = 1
+            case .refreshing:
+                alpha = 1
+                progressView.progress = 1
+                text = "Refreshing..."
+            }
+        }
+    }
+
 
     let progressView = UIProgressView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         textAlignment = .center
+        backgroundColor = .yellow
         self.addSubview(progressView)
+        alpha = 0
     }
 
     required init?(coder: NSCoder) {
@@ -27,30 +59,7 @@ class CustomPullToRefresh: UILabel, IQAnimatableRefresh {
         progressView.frame = CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: progressView.frame.height))
     }
 
-    var progress: CGFloat = 0 {
-        didSet {
-            guard !isRefreshing else {
-                return
-            }
-            alpha = progress
-            text = NSString(format: "Refresh... %.0f%%", progress*100) as String
-            progressView.progress = Float(progress)
-        }
-    }
-
-    var isRefreshing: Bool = false
-
-    func beginRefreshing() {
-        text = "Refreshing..."
-        isRefreshing = true
-    }
-
-    func endRefreshing() {
-        text = "Refresh"
-        isRefreshing = false
-    }
-
     override var intrinsicContentSize: CGSize {
-        CGSize(width: 200, height: 20)
+        CGSize(width: 200, height: refreshHeight)
     }
 }

@@ -7,67 +7,101 @@
 
 import UIKit
 
-public protocol IQAnimatableRefresh where Self: UIView {
-
-    var isRefreshing: Bool { get }
-
-    var progress: CGFloat { get set }
-
-    func beginRefreshing()
-
-    func endRefreshing()
+public enum IQAnimatableRefreshState: Equatable {
+    case none
+    case pulling(CGFloat)
+    case eligible
+    case refreshing
 }
 
+public protocol IQAnimatableRefresh where Self: UIView {
+
+    var refreshHeight: CGFloat { get }
+    var refreshState: IQAnimatableRefreshState { get set }
+}
+
+private var kRefreshState = "refreshState"
+
 extension UIActivityIndicatorView: IQAnimatableRefresh {
-    public var isRefreshing: Bool {
-        return isAnimating
+
+    public var refreshHeight: CGFloat {
+        return 60
     }
 
-    public var progress: CGFloat {
+    public var refreshState: IQAnimatableRefreshState {
         get {
-            return alpha
+            return objc_getAssociatedObject(self, &kRefreshState) as? IQAnimatableRefreshState ?? .none
         }
         set {
-            print("Progress: \(progress)")
-            
-            alpha = newValue
-            if newValue <= 0 {
-                isHidden = true
-            } else {
-                isHidden = false
+            guard refreshState != newValue else {
+                return
             }
+
+            objc_setAssociatedObject(self, &kRefreshState, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+            changeState(newState: newValue)
         }
     }
 
-    public func beginRefreshing() {
-        progress = 1
-        startAnimating()
+    public func changeState(newState: IQAnimatableRefreshState) {
 
-        UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            self?.transform = .init(scaleX: 1.2, y: 1.2)
-        }, completion: { [weak self] success in
-            UIView.animate(withDuration: 2, delay: 0, options: [.beginFromCurrentState, .curveEaseOut], animations: { [weak self] in
-                self?.transform = .init(rotationAngle: CGFloat.pi)
-            }, completion:nil)
-        })
-    }
+        switch newState {
+        case .none:
 
-    public func endRefreshing() {
-        progress = 0
-        stopAnimating()
+            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                self?.alpha = 0
+            }, completion: nil)
 
-        UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            self?.transform = .identity
-        })
+            if isAnimating {
+                stopAnimating()
+
+                UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                    self?.transform = .identity
+                })
+            }
+
+        case .pulling(let progress):
+
+            alpha = progress
+            color = UIColor.black
+
+        case .eligible:
+
+            alpha = 1
+            color = UIColor.green
+
+        case .refreshing:
+
+            alpha = 1
+            color = UIColor.blue
+
+            if !isAnimating {
+                startAnimating()
+
+                UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                    self?.transform = .init(scaleX: 1.2, y: 1.2)
+                }, completion: { [weak self] success in
+                    UIView.animate(withDuration: 2, delay: 0, options: [.beginFromCurrentState, .curveEaseOut], animations: { [weak self] in
+                        self?.transform = .init(rotationAngle: CGFloat.pi)
+                    }, completion:nil)
+                })
+            }
+        }
     }
 }
 
 extension UIRefreshControl: IQAnimatableRefresh {
-    public var progress: CGFloat {
+
+    public var refreshHeight: CGFloat {
+        return -1
+    }
+
+    public var refreshState: IQAnimatableRefreshState {
         get {
-            return 0
+            return objc_getAssociatedObject(self, &kRefreshState) as? IQAnimatableRefreshState ?? .none
         }
         set {
+            objc_setAssociatedObject(self, &kRefreshState, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }

@@ -37,7 +37,7 @@ public extension IQPullToRefresh {
     }
 
     var isMoreLoading: Bool {
-        loadMoreControl.isRefreshing
+        loadMoreControl.refreshState == .refreshing
     }
 
     func loadMore() {
@@ -52,10 +52,9 @@ public extension IQPullToRefresh {
         }
 
         var contentInset = scrollView.contentInset
-        contentInset.bottom += loadMoreHeight
+        contentInset.bottom += loadMoreControl.refreshHeight
 
-        loadMoreControl.beginRefreshing()
-        loadMoreControl.progress = 1
+        loadMoreControl.refreshState = .refreshing
 
         UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             self?.scrollView.contentInset = contentInset
@@ -69,9 +68,9 @@ public extension IQPullToRefresh {
         }
 
         var contentInset = scrollView.contentInset
-        contentInset.bottom -= loadMoreHeight
+        contentInset.bottom -= loadMoreControl.refreshHeight
 
-        loadMoreControl.endRefreshing()
+        loadMoreControl.refreshState = .none
 
         UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             self?.scrollView.contentInset = contentInset
@@ -80,11 +79,11 @@ public extension IQPullToRefresh {
 
     internal func triggerSafeLoadMore(type: LoadMoreType) {
 
-        if enableLoadMore, (!loadMoreControl.isRefreshing || type == .reachAtEnd), let moreLoader = moreLoader {
+        if enableLoadMore, (!isMoreLoading || type == .reachAtEnd), let moreLoader = moreLoader {
 
             moreLoader.loadMoreTriggered(type: type, loadingBegin: { [weak self] (success) in
                 if success {
-                    if self?.isRefreshing == false {
+                    if self?.isMoreLoading == false {
                         self?.beginLoadMoreAnimation()
                     }
                 } else {
