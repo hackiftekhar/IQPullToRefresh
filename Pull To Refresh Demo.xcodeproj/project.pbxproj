@@ -21,7 +21,8 @@
 		C0C12E6325D11DDD00140363 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12E6225D11DDD00140363 /* User.swift */; };
 		C0C12E7025D11F5100140363 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12E6F25D11F5100140363 /* UsersViewController.swift */; };
 		C0C12E9B25D1210700140363 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0C12E9A25D1210700140363 /* UserCell.xib */; };
-		C0C12EE825D153DB00140363 /* CustomPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12EE725D153DB00140363 /* CustomPullToRefresh.swift */; };
+		C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */; };
+		C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +44,8 @@
 		C0C12E6225D11DDD00140363 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C0C12E6F25D11F5100140363 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		C0C12E9A25D1210700140363 /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
-		C0C12EE725D153DB00140363 /* CustomPullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPullToRefresh.swift; sourceTree = "<group>"; };
+		C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPullToRefresh.swift; sourceTree = "<group>"; };
+		C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPullToRefresh.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +100,7 @@
 			children = (
 				C0C12EE625D153CD00140363 /* Customization */,
 				C0C12E6125D11DDD00140363 /* Model */,
-				C0C12E5D25D11DDA00140363 /* Cell */,
+				C0C12E5D25D11DDA00140363 /* Cell */,
 				C0C12E5225D11DD600140363 /* API */,
 				C0C12E2725D11D5300140363 /* AppDelegate.swift */,
 				C0C12E2925D11D5300140363 /* SceneDelegate.swift */,
@@ -130,13 +132,13 @@
 			path = "Sample Responses";
 			sourceTree = "<group>";
 		};
-		C0C12E5D25D11DDA00140363 /* Cell */ = {
+		C0C12E5D25D11DDA00140363 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
 				C0C12E5E25D11DDA00140363 /* UserCell.swift */,
 				C0C12E9A25D1210700140363 /* UserCell.xib */,
 			);
-			path = "\U0010Cell";
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		C0C12E6125D11DDD00140363 /* Model */ = {
@@ -150,7 +152,8 @@
 		C0C12EE625D153CD00140363 /* Customization */ = {
 			isa = PBXGroup;
 			children = (
-				C0C12EE725D153DB00140363 /* CustomPullToRefresh.swift */,
+				C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */,
+				C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */,
 			);
 			path = Customization;
 			sourceTree = "<group>";
@@ -278,7 +281,8 @@
 				C0C12E5A25D11DD600140363 /* IQAPIClient+User.swift in Sources */,
 				C0C12E7025D11F5100140363 /* UsersViewController.swift in Sources */,
 				C0C12E2A25D11D5300140363 /* SceneDelegate.swift in Sources */,
-				C0C12EE825D153DB00140363 /* CustomPullToRefresh.swift in Sources */,
+				C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */,
+				C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */,
 				C0C12E6325D11DDD00140363 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

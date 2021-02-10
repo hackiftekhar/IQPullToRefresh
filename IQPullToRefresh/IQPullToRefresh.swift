@@ -45,12 +45,15 @@ public class IQPullToRefresh: NSObject {
                 if let refreshControl = refreshControl as? UIRefreshControl {
                     scrollView.refreshControl = refreshControl
                 } else {
+
                     scrollView.insertSubview(refreshControl, at: 0)
                     refreshControl.translatesAutoresizingMaskIntoConstraints = false
                     refreshControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
                     refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor, constant: refreshControl.refreshHeight/2).isActive = true
 
                     if !isRefreshing {
+                        refreshControl.setNeedsLayout()
+                        refreshControl.layoutIfNeeded()
                         refreshControl.refreshState = .none
                     }
                 }
@@ -61,49 +64,6 @@ public class IQPullToRefresh: NSObject {
                 } else {
                     refreshControl.removeFromSuperview()
                 }
-            }
-        }
-    }
-
-    public var loadMoreControl: IQAnimatableRefresh {
-        didSet {
-            guard enableLoadMore else {
-                return
-            }
-
-            oldValue.removeFromSuperview()
-            scrollView.insertSubview(loadMoreControl, at: 0)
-            loadMoreControl.translatesAutoresizingMaskIntoConstraints = false
-            loadMoreControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-            loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: -loadMoreControl.refreshHeight/2).isActive = true
-
-            if !isMoreLoading {
-                loadMoreControl.refreshState = .none
-            }
-        }
-    }
-    
-    public var enableLoadMore = false {
-        didSet {
-
-            assert(moreLoader != nil, "Cannot change `enableLoadMore`. More Loader is not specified.")
-
-            guard oldValue != enableLoadMore else {
-                return
-            }
-
-            if enableLoadMore {
-                scrollView.insertSubview(loadMoreControl, at: 0)
-                loadMoreControl.translatesAutoresizingMaskIntoConstraints = false
-                loadMoreControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-                loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: -loadMoreControl.refreshHeight/2).isActive = true
-
-                if !isMoreLoading {
-                    loadMoreControl.refreshState = .none
-                }
-            } else {
-                endLoadMoreAnimation()
-                loadMoreControl.removeFromSuperview()
             }
         }
     }
@@ -128,8 +88,57 @@ public class IQPullToRefresh: NSObject {
                 refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor, constant: refreshControl.refreshHeight/2).isActive = true
 
                 if !isRefreshing {
+                    refreshControl.setNeedsLayout()
+                    refreshControl.layoutIfNeeded()
                     refreshControl.refreshState = .none
                 }
+            }
+        }
+    }
+
+    public var enableLoadMore = false {
+        didSet {
+
+            assert(moreLoader != nil, "Cannot change `enableLoadMore`. More Loader is not specified.")
+
+            guard oldValue != enableLoadMore else {
+                return
+            }
+
+            if enableLoadMore {
+                scrollView.insertSubview(loadMoreControl, at: 0)
+                loadMoreControl.translatesAutoresizingMaskIntoConstraints = false
+                loadMoreControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+                loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: -loadMoreControl.refreshHeight/2).isActive = true
+
+                if !isMoreLoading {
+                    loadMoreControl.setNeedsLayout()
+                    loadMoreControl.layoutIfNeeded()
+                    loadMoreControl.refreshState = .none
+                }
+            } else {
+                endLoadMoreAnimation()
+                loadMoreControl.removeFromSuperview()
+            }
+        }
+    }
+
+    public var loadMoreControl: IQAnimatableRefresh {
+        didSet {
+            guard enableLoadMore else {
+                return
+            }
+
+            oldValue.removeFromSuperview()
+            scrollView.insertSubview(loadMoreControl, at: 0)
+            loadMoreControl.translatesAutoresizingMaskIntoConstraints = false
+            loadMoreControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+            loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: -loadMoreControl.refreshHeight/2).isActive = true
+
+            if !isMoreLoading {
+                loadMoreControl.setNeedsLayout()
+                loadMoreControl.layoutIfNeeded()
+                loadMoreControl.refreshState = .none
             }
         }
     }
@@ -137,10 +146,6 @@ public class IQPullToRefresh: NSObject {
 
     // MARK:- Private properties
     internal static var contentOffsetObserverContext = 0
-
-//    //In some cases, the loaders
-//    private let refresherMask = CALayer()
-//    private let moreLoaderMask = CALayer()
 
     // MARK:- Public functions
 
@@ -161,21 +166,23 @@ public class IQPullToRefresh: NSObject {
         let refreshControl = UIRefreshControl()
         self.refreshControl = refreshControl
 
-        let indicatorView: UIActivityIndicatorView
+        let indicatorView: IQRefreshIndicatorView
         if #available(iOS 13.0, *) {
-            indicatorView = UIActivityIndicatorView(style: .large)
+            indicatorView = IQRefreshIndicatorView(style: .medium)
         } else {
-            indicatorView = UIActivityIndicatorView(style: .whiteLarge)
+            indicatorView = IQRefreshIndicatorView(style: .gray)
             indicatorView.color = UIColor.darkGray
         }
-        indicatorView.hidesWhenStopped = false
         self.loadMoreControl = indicatorView
-        self.loadMoreControl.refreshState = .none
 
         super.init()
 
-        refreshControl.addTarget(self, action: #selector(self.refreshControlDidRefresh), for: .valueChanged)
-        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: &Self.contentOffsetObserverContext)
+        defer {
+            self.refreshControl.refreshState = .none
+            self.loadMoreControl.refreshState = .none
+            refreshControl.addTarget(self, action: #selector(self.refreshControlDidRefresh), for: .valueChanged)
+            scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: &Self.contentOffsetObserverContext)
+        }
     }
 }
 
@@ -186,19 +193,21 @@ extension IQPullToRefresh {
         if keyPath == #keyPath(UIScrollView.contentOffset) {
 
             let newOffset = scrollView.contentOffset
-            let oldOffset = change?[.oldKey] as? CGPoint ?? newOffset
+            let adjustedInset = scrollView.adjustedContentInset
+            let contentSize = scrollView.contentSize
+            let scrollViewFrame = scrollView.frame
 
             // Pull to refresh
             if enablePullToRefresh, refresher != nil, !(refreshControl is UIRefreshControl), refreshControl.superview != nil, !isRefreshing {
-                let topEdge = newOffset.y + scrollView.adjustedContentInset.top
-                let edgeToPullToRefresh = -refreshControl.refreshHeight
 
-                let estimatedProgress = topEdge / edgeToPullToRefresh
+                let offsetToPullToRefresh = -(adjustedInset.top + refreshControl.refreshHeight)
+                let estimatedProgress = ((offsetToPullToRefresh + refreshControl.refreshHeight) - newOffset.y) / refreshControl.refreshHeight
+
                 let progress = max(0, min(1,estimatedProgress))
 
                 if scrollView.isDragging == true {
 
-                    if topEdge >= (edgeToPullToRefresh - refreshControl.refreshHeight) {
+                    if newOffset.y <= (offsetToPullToRefresh + refreshControl.refreshHeight) {
                         if progress >= 1 {
                             if refreshControl.refreshState != .eligible {
                                 refreshControl.refreshState = .pulling(progress)
@@ -214,15 +223,14 @@ extension IQPullToRefresh {
                     }
                 } else if scrollView.isDecelerating {
 
-                    if topEdge <= edgeToPullToRefresh {
+                    if refreshControl.refreshState == .eligible {
                         beginPullToRefreshAnimation()
                         triggerSafeRefresh(type: .refreshControl)
                     } else {
                         if progress == 0 {
                             refreshControl.refreshState = .none
                         } else {
-                            refreshControl.refreshState = .none
-//                            refreshControl.refreshState = .pulling(progress)
+                            refreshControl.refreshState = .pulling(progress)
                         }
                     }
                 } else if refreshControl.refreshState != .refreshing {
@@ -233,15 +241,14 @@ extension IQPullToRefresh {
             // Load more
             if enableLoadMore, moreLoader != nil, loadMoreControl.superview != nil, !isMoreLoading {
 
-                let bottomEdge = newOffset.y + scrollView.frame.height
-                let edgeToLoadMore = scrollView.contentSize.height + loadMoreControl.refreshHeight
-                let estimatedProgress = (bottomEdge - (edgeToLoadMore - loadMoreControl.refreshHeight)) / loadMoreControl.refreshHeight
+                let offsetToLoadMore = (adjustedInset.bottom + contentSize.height - scrollViewFrame.height) + loadMoreControl.refreshHeight
+                let estimatedProgress = (newOffset.y - (offsetToLoadMore - loadMoreControl.refreshHeight)) / loadMoreControl.refreshHeight
 
                 let progress = max(0, min(1,estimatedProgress))
 
                 if scrollView.isDragging == true {
 
-                    if bottomEdge >= (edgeToLoadMore - loadMoreControl.refreshHeight) {
+                    if newOffset.y >= (offsetToLoadMore - loadMoreControl.refreshHeight) {
                         if progress >= 1 {
                             if loadMoreControl.refreshState != .eligible {
                                 loadMoreControl.refreshState = .pulling(progress)
@@ -256,15 +263,14 @@ extension IQPullToRefresh {
                         loadMoreControl.refreshState = .none
                     }
                 } else if scrollView.isDecelerating {
-                    if bottomEdge >= edgeToLoadMore {
+                    if loadMoreControl.refreshState == .eligible {
                         beginLoadMoreAnimation()
                         triggerSafeLoadMore(type: .reachAtEnd)
                     } else {
                         if progress == 0 {
                             loadMoreControl.refreshState = .none
                         } else {
-                            loadMoreControl.refreshState = .none
-//                            loadMoreControl.refreshState = .pulling(progress)
+                            loadMoreControl.refreshState = .pulling(progress)
                         }
                     }
                 } else if loadMoreControl.refreshState != .refreshing {

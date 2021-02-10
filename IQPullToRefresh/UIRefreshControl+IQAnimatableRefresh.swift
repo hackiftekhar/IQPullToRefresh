@@ -1,5 +1,5 @@
 //
-//  IQAnimatableRefresh.swift
+//  UIRefreshControl+IQAnimatableRefresh.swift
 //  https://github.com/hackiftekhar/IQPullToRefresh
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,17 +22,43 @@
 
 import UIKit
 
-public enum IQAnimatableRefreshState: Equatable {
-    case unknown
-    case none
-    case pulling(CGFloat)
-    case eligible
-    case refreshing
-}
+private var kRefreshState = "refreshState"
 
-public protocol IQAnimatableRefresh where Self: UIView {
+extension UIRefreshControl: IQAnimatableRefresh {
 
-    var refreshHeight: CGFloat { get }
-    var refreshState: IQAnimatableRefreshState { get set }
+    public var refreshHeight: CGFloat {
+        return -1
+    }
+
+    public var refreshState: IQAnimatableRefreshState {
+        get {
+            return objc_getAssociatedObject(self, &kRefreshState) as? IQAnimatableRefreshState ?? .unknown
+        }
+        set {
+            let oldValue = refreshState
+
+            guard oldValue != newValue else {
+                return
+            }
+
+            objc_setAssociatedObject(self, &kRefreshState, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+            switch newValue {
+            case .unknown, .none:
+                if isRefreshing {
+                    endRefreshing()
+                }
+            case .pulling:
+                break
+            case .eligible:
+                break
+            case .refreshing:
+                if !isRefreshing {
+                    beginRefreshing()
+                }
+                break
+            }
+        }
+    }
 }
 

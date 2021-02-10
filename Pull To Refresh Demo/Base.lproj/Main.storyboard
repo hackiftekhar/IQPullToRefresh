@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="AJg-Gf-kuB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="enT-9I-9rO">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Users-->
         <scene sceneID="Xbp-eO-cso">
             <objects>
                 <tableViewController id="4ba-jW-s79" customClass="UsersViewController" customModule="Pull_To_Refresh_Demo" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,25 +20,26 @@
                             <outlet property="delegate" destination="4ba-jW-s79" id="8Rf-Qt-2Sw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="kDR-sT-hYH">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="trash" id="noo-ib-nTg">
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="trash" id="noo-ib-nTg">
                             <connections>
                                 <action selector="clearAction:" destination="4ba-jW-s79" id="Ot1-Mb-1kg"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem title="More" style="plain" id="oKa-48-Kw7">
-                                <connections>
-                                    <action selector="loadMoreAction:" destination="4ba-jW-s79" id="np4-lI-BMs"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem style="plain" systemItem="refresh" id="dJa-qr-FL0">
-                                <connections>
-                                    <action selector="refreshAction:" destination="4ba-jW-s79" id="M1h-DF-vFg"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Users" id="kDR-sT-hYH">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="refresh" id="dJa-qr-FL0">
+                            <connections>
+                                <action selector="refreshAction:" destination="4ba-jW-s79" id="M1h-DF-vFg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Load More" style="plain" id="oKa-48-Kw7">
+                            <connections>
+                                <action selector="loadMoreAction:" destination="4ba-jW-s79" id="np4-lI-BMs"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="clearButton" destination="noo-ib-nTg" id="jgi-K6-ZPR"/>
                         <outlet property="loadMoreButton" destination="oKa-48-Kw7" id="K8L-YC-gmR"/>
@@ -63,23 +64,45 @@
                     <nil key="highlightedColor"/>
                 </label>
             </objects>
-            <point key="canvasLocation" x="-143" y="160"/>
+            <point key="canvasLocation" x="766.66666666666674" y="159.375"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Item-->
         <scene sceneID="ida-pH-D5Q">
             <objects>
-                <navigationController id="AJg-Gf-kuB" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="AJg-Gf-kuB" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="CgW-KU-Ykd"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bdz-bK-rR6">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="foI-d2-EaI">
+                        <rect key="frame" x="0.0" y="764" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="4ba-jW-s79" kind="relationship" relationship="rootViewController" id="5P6-ZY-wfc"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RZs-Cq-uCd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1031" y="160"/>
+            <point key="canvasLocation" x="-121.73913043478262" y="159.375"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="3Er-TG-Td7">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="enT-9I-9rO" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Rlc-20-KhS">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="AJg-Gf-kuB" kind="relationship" relationship="viewControllers" id="62P-2e-epz"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K8B-kV-LM3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1031.8840579710145" y="159.375"/>
         </scene>
     </scenes>
     <resources>

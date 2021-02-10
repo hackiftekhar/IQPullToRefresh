@@ -2,64 +2,114 @@
 //  CustomPullToRefresh.swift
 //  Pull To Refresh Demo
 //
-//  Created by Iftekhar on 08/02/21.
+//  Created by Iftekhar on 10/02/21.
 //
 
 import UIKit
 import IQPullToRefresh
 
-class CustomPullToRefresh: UILabel, IQAnimatableRefresh {
+class CustomPullToRefresh: UIView, IQAnimatableRefresh {
     var refreshHeight: CGFloat {
-        return 100
+        return 80
     }
 
-    var refreshState: IQAnimatableRefreshState = .none {
+    var refreshState: IQAnimatableRefreshState = .unknown {
         didSet {
             guard refreshState != oldValue else {
                 return
             }
 
             switch refreshState {
-            case .none:
-                alpha = 0
+            case .unknown, .none:
+                let frame = self.frame
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.alpha = 0
+                    self?.transform = .init(translationX: 0, y: -frame.height)
+                }, completion: nil)
+                activityIndicatorView.stopAnimating()
             case .pulling(let progress):
-                alpha = progress
-                text = NSString(format: "Pull progress... %.0f%%", progress*100) as String
-                progressView.progress = Float(progress)
-                print("Progress: \(progress)")
+                let frame = self.frame
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.alpha = 1
+                    self?.transform = .init(translationX: 0, y: (frame.height * progress) - frame.height)
+
+                    let color = UIColor.systemRed
+
+                    self?.imageView.tintColor = color
+                    self?.imageView.isHidden = false
+                    self?.imageView.transform = .init(rotationAngle: CGFloat.pi * progress)
+
+                    self?.label.text = "Pull to refresh"
+                    self?.label.textColor = color
+
+                }, completion: nil)
             case .eligible:
-                alpha = 1
-                text = "Release to refresh..."
-                progressView.progress = 1
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.alpha = 1
+                    self?.transform = .identity
+
+                    let color = UIColor.systemBlue
+
+                    self?.imageView.tintColor = color
+                    self?.imageView.isHidden = false
+                    self?.imageView.transform = .init(rotationAngle: .pi)
+
+                    self?.label.text = "Release to refresh"
+                    self?.label.textColor = color
+
+                }, completion: nil)
+
             case .refreshing:
-                alpha = 1
-                progressView.progress = 1
-                text = "Refreshing..."
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.alpha = 1
+                    self?.transform = .identity
+
+                    let color = UIColor.systemGreen
+
+                    self?.activityIndicatorView.color = color
+
+                    self?.imageView.isHidden = true
+                    self?.imageView.tintColor = color
+
+                    self?.label.text = "Loading"
+                    self?.label.textColor = color
+
+                }, completion: nil)
+
+                activityIndicatorView.startAnimating()
             }
         }
     }
 
-
-    let progressView = UIProgressView()
-
+    let imageView = UIImageView(image: UIImage(named: "arrow"))
+    let label = UILabel()
+    let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    let stackView = UIStackView()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        textAlignment = .center
-        backgroundColor = .yellow
-        self.addSubview(progressView)
+
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.alignment = .center
+        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(activityIndicatorView)
+        stackView.addArrangedSubview(label)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(stackView)
+
+        stackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+
         alpha = 0
     }
 
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        progressView.frame = CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: progressView.frame.height))
-    }
-
     override var intrinsicContentSize: CGSize {
-        CGSize(width: 200, height: refreshHeight)
+        var intrinsicContentSize = super.intrinsicContentSize
+        intrinsicContentSize.height = refreshHeight
+        return intrinsicContentSize
     }
 }

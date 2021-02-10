@@ -39,6 +39,6 @@ class UserCell: UITableViewCell, IQModelableCell {
     }
 
     static func size(for model: AnyHashable?, listView: IQListView) -> CGSize {
-        return CGSize(width: 0, height: 160)
+        return CGSize(width: 0, height: 80)
     }
 }

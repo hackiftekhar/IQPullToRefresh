@@ -15,7 +15,7 @@ class UsersViewController: UITableViewController {
     typealias Cell = UserCell
     typealias Model = User
 
-    let pageSize = 3
+    let pageSize = 5
 
     @IBOutlet var refreshButton: UIBarButtonItem!
     @IBOutlet var loadMoreButton: UIBarButtonItem!
@@ -28,23 +28,17 @@ class UsersViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
-
+        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
 
         refresher.enablePullToRefresh = true
-//        refresher.refreshControl.tintColor = UIColor.blue
-//        if let activityIndicator = refresher.loadMoreControl as? UIActivityIndicatorView {
-//            activityIndicator.color = UIColor.red
-//            if #available(iOS 13.0, *) {
-//                activityIndicator.style = .medium
-//            }
-//        }
-
 
         let customPullToRefresh = CustomPullToRefresh()
         refresher.refreshControl = customPullToRefresh
 
-        let customLoadMore = CustomPullToRefresh()
+//        let customPullToRefresh = ProgressPullToRefresh()
+//        refresher.refreshControl = customPullToRefresh
+//
+        let customLoadMore = ProgressPullToRefresh()
         refresher.loadMoreControl = customLoadMore
 
 //        let newRefreshIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
@@ -63,11 +57,12 @@ class UsersViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refresher.refresh()
+//        refresher.refresh()
     }
 
     @IBAction func clearAction(_ sender: UIBarButtonItem) {
         models = []
+        refresher.enableLoadMore = false
         refreshUI()
     }
 
@@ -100,7 +95,8 @@ extension UsersViewController: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
                 self.models = models
-                self.refresher.enableLoadMore = models.count.isMultiple(of: self.pageSize)
+                let gotAllRecords = models.count.isMultiple(of: self.pageSize)
+                self.refresher.enableLoadMore = models.count != 0 && gotAllRecords
                 self.refreshUI()
             case .failure:
                 break
