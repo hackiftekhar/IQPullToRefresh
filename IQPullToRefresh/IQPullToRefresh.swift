@@ -146,6 +146,7 @@ public class IQPullToRefresh: NSObject {
 
     // MARK:- Private properties
     internal static var contentOffsetObserverContext = 0
+    internal static let hapticGenerator = UISelectionFeedbackGenerator()
 
     // MARK:- Public functions
 
