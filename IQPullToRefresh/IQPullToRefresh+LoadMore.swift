@@ -55,7 +55,6 @@ public extension IQPullToRefresh {
         contentInset.bottom += loadMoreControl.refreshHeight
 
         loadMoreControl.refreshState = .refreshing
-        Self.hapticGenerator.selectionChanged()
 
         UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             self?.scrollView.contentInset = contentInset
