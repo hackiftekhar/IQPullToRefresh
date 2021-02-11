@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		1205659DECDE9C1F0F90D5D6 /* Pods_Pull_To_Refresh_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */; };
+		C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */; };
+		C0A2702525D5656700363622 /* CookingRefresher.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701825D5656700363622 /* CookingRefresher.xcassets */; };
+		C0A2702625D5656700363622 /* pea-from-left-path-only.svg in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701925D5656700363622 /* pea-from-left-path-only.svg */; };
+		C0A2702725D5656700363622 /* carrot-path-only.svg in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701A25D5656700363622 /* carrot-path-only.svg */; };
+		C0A2702825D5656700363622 /* SoupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701B25D5656700363622 /* SoupView.xib */; };
+		C0A2702925D5656700363622 /* pea-from-right-path-only.svg in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701C25D5656700363622 /* pea-from-right-path-only.svg */; };
+		C0A2702A25D5656700363622 /* potato-path-only.svg in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701D25D5656700363622 /* potato-path-only.svg */; };
+		C0A2702B25D5656700363622 /* cover-path-only.svg in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701E25D5656700363622 /* cover-path-only.svg */; };
+		C0A2702C25D5656700363622 /* PullToMakeSoup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2701F25D5656700363622 /* PullToMakeSoup.swift */; };
+		C0A2702D25D5656700363622 /* PocketSVG.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A2702225D5656700363622 /* PocketSVG.m */; };
+		C0A2702E25D5656700363622 /* PocketSVG+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2702325D5656700363622 /* PocketSVG+Extension.swift */; };
 		C0C12E2825D11D5300140363 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12E2725D11D5300140363 /* AppDelegate.swift */; };
 		C0C12E2A25D11D5300140363 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12E2925D11D5300140363 /* SceneDelegate.swift */; };
 		C0C12E2F25D11D5300140363 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0C12E2D25D11D5300140363 /* Main.storyboard */; };
@@ -29,6 +40,19 @@
 		1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pull_To_Refresh_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B487378FCBB92DCC128E71A /* Pods-Pull To Refresh Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pull To Refresh Demo.release.xcconfig"; path = "Target Support Files/Pods-Pull To Refresh Demo/Pods-Pull To Refresh Demo.release.xcconfig"; sourceTree = "<group>"; };
 		BF6BC0D7A19B454002BE4590 /* Pods-Pull To Refresh Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pull To Refresh Demo.debug.xcconfig"; path = "Target Support Files/Pods-Pull To Refresh Demo/Pods-Pull To Refresh Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAKeyframeAnimation+Extensions.swift"; sourceTree = "<group>"; };
+		C0A2701825D5656700363622 /* CookingRefresher.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CookingRefresher.xcassets; sourceTree = "<group>"; };
+		C0A2701925D5656700363622 /* pea-from-left-path-only.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "pea-from-left-path-only.svg"; sourceTree = "<group>"; };
+		C0A2701A25D5656700363622 /* carrot-path-only.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "carrot-path-only.svg"; sourceTree = "<group>"; };
+		C0A2701B25D5656700363622 /* SoupView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SoupView.xib; sourceTree = "<group>"; };
+		C0A2701C25D5656700363622 /* pea-from-right-path-only.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "pea-from-right-path-only.svg"; sourceTree = "<group>"; };
+		C0A2701D25D5656700363622 /* potato-path-only.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "potato-path-only.svg"; sourceTree = "<group>"; };
+		C0A2701E25D5656700363622 /* cover-path-only.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "cover-path-only.svg"; sourceTree = "<group>"; };
+		C0A2701F25D5656700363622 /* PullToMakeSoup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullToMakeSoup.swift; sourceTree = "<group>"; };
+		C0A2702125D5656700363622 /* PocketSVG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketSVG.h; sourceTree = "<group>"; };
+		C0A2702225D5656700363622 /* PocketSVG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketSVG.m; sourceTree = "<group>"; };
+		C0A2702325D5656700363622 /* PocketSVG+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PocketSVG+Extension.swift"; sourceTree = "<group>"; };
+		C0A2703525D568C000363622 /* Pull_To_Refresh_Demo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pull_To_Refresh_Demo-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		C0C12E2425D11D5300140363 /* Pull To Refresh Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pull To Refresh Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0C12E2725D11D5300140363 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0C12E2925D11D5300140363 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +99,42 @@
 				1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C0A2701525D5656700363622 /* PullToMakeSoup */ = {
+			isa = PBXGroup;
+			children = (
+				C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */,
+				C0A2701725D5656700363622 /* Resources */,
+				C0A2701F25D5656700363622 /* PullToMakeSoup.swift */,
+				C0A2702025D5656700363622 /* PocketSVG */,
+			);
+			path = PullToMakeSoup;
+			sourceTree = "<group>";
+		};
+		C0A2701725D5656700363622 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C0A2701825D5656700363622 /* CookingRefresher.xcassets */,
+				C0A2701925D5656700363622 /* pea-from-left-path-only.svg */,
+				C0A2701A25D5656700363622 /* carrot-path-only.svg */,
+				C0A2701B25D5656700363622 /* SoupView.xib */,
+				C0A2701C25D5656700363622 /* pea-from-right-path-only.svg */,
+				C0A2701D25D5656700363622 /* potato-path-only.svg */,
+				C0A2701E25D5656700363622 /* cover-path-only.svg */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C0A2702025D5656700363622 /* PocketSVG */ = {
+			isa = PBXGroup;
+			children = (
+				C0A2702125D5656700363622 /* PocketSVG.h */,
+				C0A2702225D5656700363622 /* PocketSVG.m */,
+				C0A2702325D5656700363622 /* PocketSVG+Extension.swift */,
+				C0A2703525D568C000363622 /* Pull_To_Refresh_Demo-Bridging-Header.h */,
+			);
+			path = PocketSVG;
 			sourceTree = "<group>";
 		};
 		C0C12E1B25D11D5200140363 = {
@@ -152,6 +212,7 @@
 		C0C12EE625D153CD00140363 /* Customization */ = {
 			isa = PBXGroup;
 			children = (
+				C0A2701525D5656700363622 /* PullToMakeSoup */,
 				C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */,
 				C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */,
 			);
@@ -217,11 +278,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0A2702925D5656700363622 /* pea-from-right-path-only.svg in Resources */,
 				C0C12E5825D11DD600140363 /* Users.json in Resources */,
+				C0A2702625D5656700363622 /* pea-from-left-path-only.svg in Resources */,
 				C0C12E5925D11DD600140363 /* Colors.json in Resources */,
 				C0C12E9B25D1210700140363 /* UserCell.xib in Resources */,
+				C0A2702525D5656700363622 /* CookingRefresher.xcassets in Resources */,
+				C0A2702725D5656700363622 /* carrot-path-only.svg in Resources */,
 				C0C12E3425D11D5300140363 /* LaunchScreen.storyboard in Resources */,
+				C0A2702825D5656700363622 /* SoupView.xib in Resources */,
 				C0C12E3125D11D5300140363 /* Assets.xcassets in Resources */,
+				C0A2702A25D5656700363622 /* potato-path-only.svg in Resources */,
+				C0A2702B25D5656700363622 /* cover-path-only.svg in Resources */,
 				C0C12E2F25D11D5300140363 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,11 +344,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0C12E5B25D11DD600140363 /* IQAPIClient+APIPath.swift in Sources */,
+				C0A2702C25D5656700363622 /* PullToMakeSoup.swift in Sources */,
 				C0C12E5F25D11DDA00140363 /* UserCell.swift in Sources */,
 				C0C12E2825D11D5300140363 /* AppDelegate.swift in Sources */,
+				C0A2702D25D5656700363622 /* PocketSVG.m in Sources */,
+				C0A2702E25D5656700363622 /* PocketSVG+Extension.swift in Sources */,
 				C0C12E5A25D11DD600140363 /* IQAPIClient+User.swift in Sources */,
 				C0C12E7025D11F5100140363 /* UsersViewController.swift in Sources */,
 				C0C12E2A25D11D5300140363 /* SceneDelegate.swift in Sources */,
+				C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */,
 				C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */,
 				C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */,
 				C0C12E6325D11DDD00140363 /* User.swift in Sources */,
@@ -443,6 +515,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.infoenumapps.pulltorefresh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = infoenumapps;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SWIFT_MODULE_NAME)-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -466,6 +539,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.infoenumapps.pulltorefresh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = infoenumapps;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SWIFT_MODULE_NAME)-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

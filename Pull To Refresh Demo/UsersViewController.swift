@@ -28,12 +28,15 @@ class UsersViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
+//        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
 
         refresher.enablePullToRefresh = true
 
-        let customPullToRefresh = CustomPullToRefresh()
-        refresher.refreshControl = customPullToRefresh
+//        let customPullToRefresh = CustomPullToRefresh()
+//        refresher.refreshControl = customPullToRefresh
+
+        let soupPullToRefresh = SoupView.soapView()
+        refresher.refreshControl = soupPullToRefresh
 
 //        let customPullToRefresh = ProgressPullToRefresh()
 //        refresher.refreshControl = customPullToRefresh
