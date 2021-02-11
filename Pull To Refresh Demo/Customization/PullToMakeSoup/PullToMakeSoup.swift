@@ -382,8 +382,13 @@ class SoupView: UIView, IQAnimatableRefresh {
         func progressWithOffset(_ offset: Double, _ progress: Double) -> Double {
             return progress < offset ? 0 : (progress - offset) * 1/(1 - offset)
         }
-        
-        pan.alpha = progress
+
+        if progress == 0 {
+            pan.alpha = 0
+        } else {
+            pan.alpha = 1
+        }
+
         pan.layer.timeOffset = Double(speededProgress) * animationDuration
         cover.layer.timeOffset = animationDuration * progressWithOffset(0.9, Double(progress))
 

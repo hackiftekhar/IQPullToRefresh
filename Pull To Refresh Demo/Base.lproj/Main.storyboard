@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="enT-9I-9rO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="AJg-Gf-kuB">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -66,17 +66,17 @@
             </objects>
             <point key="canvasLocation" x="766.66666666666674" y="159.375"/>
         </scene>
-        <!--Item-->
+        <!--Users-->
         <scene sceneID="ida-pH-D5Q">
             <objects>
                 <navigationController toolbarHidden="NO" id="AJg-Gf-kuB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="CgW-KU-Ykd"/>
+                    <tabBarItem key="tabBarItem" title="Users" id="CgW-KU-Ykd"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bdz-bK-rR6">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="foI-d2-EaI">
-                        <rect key="frame" x="0.0" y="764" width="414" height="49"/>
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -86,23 +86,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RZs-Cq-uCd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-121.73913043478262" y="159.375"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="3Er-TG-Td7">
-            <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="enT-9I-9rO" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Rlc-20-KhS">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="AJg-Gf-kuB" kind="relationship" relationship="viewControllers" id="62P-2e-epz"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="K8B-kV-LM3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1031.8840579710145" y="159.375"/>
         </scene>
     </scenes>
     <resources>

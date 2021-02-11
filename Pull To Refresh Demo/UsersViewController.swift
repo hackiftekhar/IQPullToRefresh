@@ -35,14 +35,14 @@ class UsersViewController: UITableViewController {
 //        let customPullToRefresh = CustomPullToRefresh()
 //        refresher.refreshControl = customPullToRefresh
 
-        let soupPullToRefresh = SoupView.soapView()
-        refresher.refreshControl = soupPullToRefresh
+//        let soupPullToRefresh = SoupView.soapView()
+//        refresher.refreshControl = soupPullToRefresh
 
-//        let customPullToRefresh = ProgressPullToRefresh()
-//        refresher.refreshControl = customPullToRefresh
+        let customPullToRefresh = ProgressPullToRefresh()
+        refresher.refreshControl = customPullToRefresh
 //
-        let customLoadMore = ProgressPullToRefresh()
-        refresher.loadMoreControl = customLoadMore
+//        let customLoadMore = ProgressPullToRefresh()
+//        refresher.loadMoreControl = customLoadMore
 
 //        let newRefreshIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
 //        newRefreshIndicatorView.hidesWhenStopped = false

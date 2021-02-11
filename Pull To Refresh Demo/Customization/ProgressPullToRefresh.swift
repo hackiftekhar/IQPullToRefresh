@@ -26,7 +26,6 @@ class ProgressPullToRefresh: UILabel, IQAnimatableRefresh {
                 alpha = progress
                 text = NSString(format: "Pull progress... %.0f%%", progress*100) as String
                 progressView.progress = Float(progress)
-                print("Progress: \(progress)")
             case .eligible:
                 alpha = 1
                 text = "Release to refresh..."
@@ -38,7 +37,6 @@ class ProgressPullToRefresh: UILabel, IQAnimatableRefresh {
             }
         }
     }
-
 
     let progressView = UIProgressView()
 
