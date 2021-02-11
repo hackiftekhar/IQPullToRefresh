@@ -146,6 +146,8 @@ public class IQPullToRefresh: NSObject {
 
     // MARK:- Private properties
     internal static var contentOffsetObserverContext = 0
+    internal static let hapticGenerator = UISelectionFeedbackGenerator()
+    internal static let impactGenerator = UIImpactFeedbackGenerator(style: .light)
 
     // MARK:- Public functions
 
@@ -212,10 +214,14 @@ extension IQPullToRefresh {
                             if refreshControl.refreshState != .eligible {
                                 refreshControl.refreshState = .pulling(progress)
                                 refreshControl.refreshState = .eligible
+                                Self.hapticGenerator.selectionChanged()
                             }
                         } else if progress <= 0 {
                             refreshControl.refreshState = .none
                         } else {
+                            if refreshControl.refreshState == .eligible {
+                                Self.hapticGenerator.selectionChanged()
+                            }
                             refreshControl.refreshState = .pulling(progress)
                         }
                     } else {
@@ -224,6 +230,7 @@ extension IQPullToRefresh {
                 } else if scrollView.isDecelerating {
 
                     if refreshControl.refreshState == .eligible {
+                        Self.impactGenerator.impactOccurred()
                         beginPullToRefreshAnimation()
                         triggerSafeRefresh(type: .refreshControl)
                     } else {
@@ -253,10 +260,14 @@ extension IQPullToRefresh {
                             if loadMoreControl.refreshState != .eligible {
                                 loadMoreControl.refreshState = .pulling(progress)
                                 loadMoreControl.refreshState = .eligible
+                                Self.hapticGenerator.selectionChanged()
                             }
                         } else if progress <= 0 {
                             loadMoreControl.refreshState = .none
                         } else {
+                            if loadMoreControl.refreshState == .eligible {
+                                Self.hapticGenerator.selectionChanged()
+                            }
                             loadMoreControl.refreshState = .pulling(progress)
                         }
                     } else {
@@ -264,6 +275,7 @@ extension IQPullToRefresh {
                     }
                 } else if scrollView.isDecelerating {
                     if loadMoreControl.refreshState == .eligible {
+                        Self.impactGenerator.impactOccurred()
                         beginLoadMoreAnimation()
                         triggerSafeLoadMore(type: .reachAtEnd)
                     } else {
