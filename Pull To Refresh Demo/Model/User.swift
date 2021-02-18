@@ -28,6 +28,10 @@ struct User: Decodable, Hashable {
     var email: String
     var avatar: URL?
 
+    var name: String {
+        return [first_name, last_name].joined(separator: " ")
+    }
+
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case first_name = "first_name"

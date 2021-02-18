@@ -9,6 +9,7 @@ import UIKit
 import IQPullToRefresh
 
 class ProgressPullToRefresh: UILabel, IQAnimatableRefresh {
+
     var refreshHeight: CGFloat {
         return 100
     }

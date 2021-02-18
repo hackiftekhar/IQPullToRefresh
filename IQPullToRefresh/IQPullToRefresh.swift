@@ -202,7 +202,7 @@ extension IQPullToRefresh {
             // Pull to refresh
             if enablePullToRefresh, refresher != nil, !(refreshControl is UIRefreshControl), refreshControl.superview != nil, !isRefreshing {
 
-                let offsetToPullToRefresh = -(adjustedInset.top + refreshControl.refreshHeight)
+                let offsetToPullToRefresh = -(adjustedInset.top + refreshControl.refreshHeight) + refreshControl.preloadOffset
                 let estimatedProgress = ((offsetToPullToRefresh + refreshControl.refreshHeight) - newOffset.y) / refreshControl.refreshHeight
 
                 let progress = max(0, min(1,estimatedProgress))
@@ -211,7 +211,11 @@ extension IQPullToRefresh {
 
                     if newOffset.y <= (offsetToPullToRefresh + refreshControl.refreshHeight) {
                         if progress >= 1 {
-                            if refreshControl.refreshState != .eligible {
+                            if refreshControl.refreshStyle == .progressCompletion {
+                                Self.impactGenerator.impactOccurred()
+                                beginPullToRefreshAnimation()
+                                triggerSafeRefresh(type: .refreshControl)
+                            } else if refreshControl.refreshState != .eligible {
                                 refreshControl.refreshState = .pulling(progress)
                                 refreshControl.refreshState = .eligible
                                 Self.hapticGenerator.selectionChanged()
@@ -250,9 +254,9 @@ extension IQPullToRefresh {
 
                 let offsetToLoadMore: CGFloat
                 if (contentSize.height + adjustedInset.top + adjustedInset.bottom) < scrollViewFrame.height {
-                    offsetToLoadMore = -adjustedInset.top + loadMoreControl.refreshHeight
+                    offsetToLoadMore = -adjustedInset.top + loadMoreControl.refreshHeight - loadMoreControl.preloadOffset
                 } else {
-                    offsetToLoadMore = (adjustedInset.bottom + contentSize.height - scrollViewFrame.height) + loadMoreControl.refreshHeight
+                    offsetToLoadMore = (adjustedInset.bottom + contentSize.height - scrollViewFrame.height) + loadMoreControl.refreshHeight - loadMoreControl.preloadOffset
                 }
 
                 let estimatedProgress = (newOffset.y - (offsetToLoadMore - loadMoreControl.refreshHeight)) / loadMoreControl.refreshHeight
@@ -263,7 +267,11 @@ extension IQPullToRefresh {
 
                     if newOffset.y >= (offsetToLoadMore - loadMoreControl.refreshHeight) {
                         if progress >= 1 {
-                            if loadMoreControl.refreshState != .eligible {
+                            if loadMoreControl.refreshStyle == .progressCompletion {
+                                Self.impactGenerator.impactOccurred()
+                                beginLoadMoreAnimation()
+                                triggerSafeLoadMore(type: .reachAtEnd)
+                            } else if loadMoreControl.refreshState != .eligible {
                                 loadMoreControl.refreshState = .pulling(progress)
                                 loadMoreControl.refreshState = .eligible
                                 Self.hapticGenerator.selectionChanged()

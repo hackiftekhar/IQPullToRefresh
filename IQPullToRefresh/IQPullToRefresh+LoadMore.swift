@@ -70,11 +70,11 @@ public extension IQPullToRefresh {
         var contentInset = scrollView.contentInset
         contentInset.bottom -= loadMoreControl.refreshHeight
 
-        loadMoreControl.refreshState = .none
-
         UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             self?.scrollView.contentInset = contentInset
         }, completion: nil)
+
+        loadMoreControl.refreshState = .none
     }
 
     internal func triggerSafeLoadMore(type: LoadMoreType) {

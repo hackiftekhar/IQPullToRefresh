@@ -23,16 +23,43 @@
 import UIKit
 
 public enum IQAnimatableRefreshState: Equatable {
-    case unknown
-    case none
-    case pulling(CGFloat)
-    case eligible
-    case refreshing
+    case unknown            // Unknown state for initialization
+    case none               // refreshControler is not active
+    case pulling(CGFloat)   // Pulling the refreshControl
+    case eligible           // Progress is completed but touch not released
+    case refreshing         // Triggered refreshing
+}
+
+public enum IQRefreshTriggerStyle: Equatable {
+
+    case touchRelease   // Trigger when user pull 100% and then release touch
+
+    case progressCompletion //Trigger when user pull 100%
 }
 
 public protocol IQAnimatableRefresh where Self: UIView {
 
+    // Default is touchRelease
+    var refreshStyle: IQRefreshTriggerStyle { get }
+
+    // Default is 0
+    var preloadOffset: CGFloat { get }
+
+    // Height of the refreshControl
     var refreshHeight: CGFloat { get }
+
+    // Changes of the refreshControl state
+    // You must implement didSet and do your UI updates based on the state
     var refreshState: IQAnimatableRefreshState { get set }
 }
 
+extension IQAnimatableRefresh {
+
+    public var refreshStyle: IQRefreshTriggerStyle {
+        return .touchRelease
+    }
+
+    public var preloadOffset: CGFloat {
+        return 0
+    }
+}

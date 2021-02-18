@@ -15,12 +15,14 @@ class UsersViewController: UITableViewController {
     typealias Cell = UserCell
     typealias Model = User
 
-    let pageSize = 5
+    let pageSize = 3
 
     @IBOutlet var refreshButton: UIBarButtonItem!
     @IBOutlet var loadMoreButton: UIBarButtonItem!
     @IBOutlet var clearButton: UIBarButtonItem!
     var models = [Model]()
+
+    var previousPageNumber = 0
 
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
     lazy var refresher = IQPullToRefresh(scrollView: tableView, refresher: self, moreLoader: self)
@@ -38,10 +40,13 @@ class UsersViewController: UITableViewController {
 //        let soupPullToRefresh = SoupView.soapView()
 //        refresher.refreshControl = soupPullToRefresh
 
-        let customPullToRefresh = ProgressPullToRefresh()
-        refresher.refreshControl = customPullToRefresh
-//
+//        let customPullToRefresh = ProgressPullToRefresh()
+//        refresher.refreshControl = customPullToRefresh
+
 //        let customLoadMore = ProgressPullToRefresh()
+//        refresher.loadMoreControl = customLoadMore
+
+//        let customLoadMore = PreloadActivityIndicatorView(style: .gray)
 //        refresher.loadMoreControl = customLoadMore
 
 //        let newRefreshIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
@@ -100,6 +105,11 @@ extension UsersViewController: Refreshable, MoreLoadable {
                 self.models = models
                 let gotAllRecords = models.count.isMultiple(of: self.pageSize)
                 self.refresher.enableLoadMore = models.count != 0 && gotAllRecords
+
+                let allIDs = self.models.map { $0.id }
+                print(allIDs)
+                print("\n\n")
+
                 self.refreshUI()
             case .failure:
                 break
@@ -121,6 +131,12 @@ extension UsersViewController: Refreshable, MoreLoadable {
 
         let page = (models.count / pageSize) + 1
 
+        if previousPageNumber == page {
+            print("Same page number")
+        }
+
+        previousPageNumber = page
+
         IQAPIClient.users(page: page, perPage: pageSize, completion: { [weak self] result in
             guard let self = self else {
                 return
@@ -133,6 +149,11 @@ extension UsersViewController: Refreshable, MoreLoadable {
                 self.models.append(contentsOf: models)
                 let gotAllRecords = models.count.isMultiple(of: self.pageSize)
                 self.refresher.enableLoadMore = models.count != 0 && gotAllRecords
+
+                let allIDs = self.models.map { $0.id }
+                print(allIDs)
+                print("\n\n")
+
                 self.refreshUI()
             case .failure:
                 break

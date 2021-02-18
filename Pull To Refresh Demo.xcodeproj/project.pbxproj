@@ -19,6 +19,7 @@
 		C0A2702C25D5656700363622 /* PullToMakeSoup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2701F25D5656700363622 /* PullToMakeSoup.swift */; };
 		C0A2702D25D5656700363622 /* PocketSVG.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A2702225D5656700363622 /* PocketSVG.m */; };
 		C0A2702E25D5656700363622 /* PocketSVG+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2702325D5656700363622 /* PocketSVG+Extension.swift */; };
+		C0B61D3125DE7C3E00D4F126 /* PreloadActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B61D3025DE7C3E00D4F126 /* PreloadActivityIndicatorView.swift */; };
 		C0C12E2825D11D5300140363 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12E2725D11D5300140363 /* AppDelegate.swift */; };
 		C0C12E2A25D11D5300140363 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12E2925D11D5300140363 /* SceneDelegate.swift */; };
 		C0C12E2F25D11D5300140363 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0C12E2D25D11D5300140363 /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		C0A2702225D5656700363622 /* PocketSVG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketSVG.m; sourceTree = "<group>"; };
 		C0A2702325D5656700363622 /* PocketSVG+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PocketSVG+Extension.swift"; sourceTree = "<group>"; };
 		C0A2703525D568C000363622 /* Pull_To_Refresh_Demo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pull_To_Refresh_Demo-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		C0B61D3025DE7C3E00D4F126 /* PreloadActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreloadActivityIndicatorView.swift; sourceTree = "<group>"; };
 		C0C12E2425D11D5300140363 /* Pull To Refresh Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pull To Refresh Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0C12E2725D11D5300140363 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0C12E2925D11D5300140363 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				C0A2701525D5656700363622 /* PullToMakeSoup */,
 				C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */,
 				C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */,
+				C0B61D3025DE7C3E00D4F126 /* PreloadActivityIndicatorView.swift */,
 			);
 			path = Customization;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				C0A2702D25D5656700363622 /* PocketSVG.m in Sources */,
 				C0A2702E25D5656700363622 /* PocketSVG+Extension.swift in Sources */,
 				C0C12E5A25D11DD600140363 /* IQAPIClient+User.swift in Sources */,
+				C0B61D3125DE7C3E00D4F126 /* PreloadActivityIndicatorView.swift in Sources */,
 				C0C12E7025D11F5100140363 /* UsersViewController.swift in Sources */,
 				C0C12E2A25D11D5300140363 /* SceneDelegate.swift in Sources */,
 				C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */,

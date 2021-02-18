@@ -9,6 +9,7 @@ import UIKit
 import IQPullToRefresh
 
 class CustomPullToRefresh: UIView, IQAnimatableRefresh {
+
     var refreshHeight: CGFloat {
         return 80
     }
