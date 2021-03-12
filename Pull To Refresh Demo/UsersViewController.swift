@@ -22,8 +22,6 @@ class UsersViewController: UITableViewController {
     @IBOutlet var clearButton: UIBarButtonItem!
     var models = [Model]()
 
-    var previousPageNumber = 0
-
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
     lazy var refresher = IQPullToRefresh(scrollView: tableView, refresher: self, moreLoader: self)
 
@@ -130,12 +128,6 @@ extension UsersViewController: Refreshable, MoreLoadable {
         loadingBegin(true)
 
         let page = (models.count / pageSize) + 1
-
-        if previousPageNumber == page {
-            print("Same page number")
-        }
-
-        previousPageNumber = page
 
         IQAPIClient.users(page: page, perPage: pageSize, completion: { [weak self] result in
             guard let self = self else {

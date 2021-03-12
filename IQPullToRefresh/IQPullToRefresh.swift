@@ -22,7 +22,7 @@
 
 import UIKit
 
-public class IQPullToRefresh: NSObject {
+public final class IQPullToRefresh: NSObject {
 
     // MARK:- Public properties
 
