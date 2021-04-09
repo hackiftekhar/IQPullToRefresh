@@ -30,6 +30,13 @@ public enum IQAnimatableRefreshState: Equatable {
     case refreshing         // Triggered refreshing
 }
 
+public enum IQRefreshTriggerMode {
+
+    case userInteraction    // Trigger when user manually pull (load more)
+
+    case scrollLimitReached // Trigger when the scrollView reach at the end (load more)
+}
+
 public enum IQRefreshTriggerStyle: Equatable {
 
     case touchRelease   // Trigger when user pull 100% and then release touch
@@ -39,11 +46,14 @@ public enum IQRefreshTriggerStyle: Equatable {
 
 public protocol IQAnimatableRefresh where Self: UIView {
 
+    // Default is userInteraction
+    var mode: IQRefreshTriggerMode { get set }
+
     // Default is touchRelease
-    var refreshStyle: IQRefreshTriggerStyle { get }
+    var refreshStyle: IQRefreshTriggerStyle { get set }
 
     // Default is 0
-    var preloadOffset: CGFloat { get }
+    var preloadOffset: CGFloat { get set }
 
     // Height of the refreshControl
     var refreshHeight: CGFloat { get }
@@ -53,13 +63,36 @@ public protocol IQAnimatableRefresh where Self: UIView {
     var refreshState: IQAnimatableRefreshState { get set }
 }
 
+private var kRefreshMode = "kRefreshMode"
+private var kRefreshStyle = "kRefreshStyle"
+private var kPreloadOffset = "kPreloadOffset"
+
 extension IQAnimatableRefresh {
 
+    public var mode: IQRefreshTriggerMode {
+        get {
+            return objc_getAssociatedObject(self, &kRefreshMode) as? IQRefreshTriggerMode ?? .userInteraction
+        }
+        set {
+            objc_setAssociatedObject(self, &kRefreshMode, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
     public var refreshStyle: IQRefreshTriggerStyle {
-        return .touchRelease
+        get {
+            return objc_getAssociatedObject(self, &kRefreshStyle) as? IQRefreshTriggerStyle ?? .touchRelease
+        }
+        set {
+            objc_setAssociatedObject(self, &kRefreshStyle, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
     }
 
     public var preloadOffset: CGFloat {
-        return 0
+        get {
+            return objc_getAssociatedObject(self, &kPreloadOffset) as? CGFloat ?? 0
+        }
+        set {
+            objc_setAssociatedObject(self, &kPreloadOffset, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
     }
 }

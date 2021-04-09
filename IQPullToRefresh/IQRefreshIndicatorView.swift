@@ -26,6 +26,9 @@ private var kRefreshState = "refreshState"
 
 public class IQRefreshIndicatorView: UIActivityIndicatorView, IQAnimatableRefresh {
 
+    public var mode: IQRefreshTriggerMode = .scrollLimitReached
+    public var refreshStyle: IQRefreshTriggerStyle = .progressCompletion
+
     public var refreshHeight: CGFloat {
         return 60
     }

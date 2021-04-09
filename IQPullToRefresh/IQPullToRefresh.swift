@@ -252,11 +252,15 @@ extension IQPullToRefresh {
             // Load more
             if enableLoadMore, moreLoader != nil, loadMoreControl.superview != nil, !isMoreLoading {
 
-                let offsetToLoadMore: CGFloat
+                var offsetToLoadMore: CGFloat = 0
                 if (contentSize.height + adjustedInset.top + adjustedInset.bottom) < scrollViewFrame.height {
-                    offsetToLoadMore = -adjustedInset.top + loadMoreControl.refreshHeight - loadMoreControl.preloadOffset
+                    offsetToLoadMore = -adjustedInset.top - loadMoreControl.preloadOffset
                 } else {
-                    offsetToLoadMore = (adjustedInset.bottom + contentSize.height - scrollViewFrame.height) + loadMoreControl.refreshHeight - loadMoreControl.preloadOffset
+                    offsetToLoadMore = (adjustedInset.bottom + contentSize.height - scrollViewFrame.height) - loadMoreControl.preloadOffset
+                }
+
+                if loadMoreControl.mode == .userInteraction {
+                    offsetToLoadMore += loadMoreControl.refreshHeight
                 }
 
                 let estimatedProgress = (newOffset.y - (offsetToLoadMore - loadMoreControl.refreshHeight)) / loadMoreControl.refreshHeight
