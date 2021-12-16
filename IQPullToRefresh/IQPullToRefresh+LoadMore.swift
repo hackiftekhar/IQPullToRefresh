@@ -22,7 +22,7 @@
 
 import UIKit
 
-public protocol MoreLoadable: class {
+public protocol MoreLoadable: AnyObject {
 
     func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
                            loadingBegin: @escaping (_ success: Bool) -> Void,
@@ -44,6 +44,9 @@ public extension IQPullToRefresh {
         triggerSafeLoadMore(type: .manual)
     }
 
+    func stopLoadMore() {
+        endLoadMoreAnimation()
+    }
 
     internal func beginLoadMoreAnimation() {
 

@@ -22,7 +22,7 @@
 
 import UIKit
 
-public protocol Refreshable: class {
+public protocol Refreshable: AnyObject {
 
     func refreshTriggered(type: IQPullToRefresh.RefreshType,
                           loadingBegin: @escaping (_ success: Bool) -> Void,
@@ -42,6 +42,10 @@ public extension IQPullToRefresh {
 
     func refresh() {
         triggerSafeRefresh(type: .manual)
+    }
+
+    func stopRefresh() {
+        endPullToRefreshAnimation()
     }
 
     internal func beginPullToRefreshAnimation() {

@@ -101,8 +101,8 @@ extension UsersViewController: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
                 self.models = models
-                let gotAllRecords = models.count.isMultiple(of: self.pageSize)
-                self.refresher.enableLoadMore = models.count != 0 && gotAllRecords
+                let gotAllRecords = models.count == self.pageSize
+                self.refresher.enableLoadMore = gotAllRecords
 
                 let allIDs = self.models.map { $0.id }
                 print(allIDs)
@@ -139,12 +139,8 @@ extension UsersViewController: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
                 self.models.append(contentsOf: models)
-                let gotAllRecords = models.count.isMultiple(of: self.pageSize)
-                self.refresher.enableLoadMore = models.count != 0 && gotAllRecords
-
-                let allIDs = self.models.map { $0.id }
-                print(allIDs)
-                print("\n\n")
+                let gotAllRecords = models.count == self.pageSize
+                self.refresher.enableLoadMore = gotAllRecords
 
                 self.refreshUI()
             case .failure:
