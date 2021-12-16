@@ -79,6 +79,14 @@ class UsersViewController: UITableViewController {
     @IBAction func loadMoreAction(_ sender: UIBarButtonItem) {
         refresher.loadMore()
     }
+
+    @IBAction func stopRefreshAction(_ sender: UIBarButtonItem) {
+        refresher.stopRefresh()
+    }
+
+    @IBAction func stopLoadMoreAction(_ sender: UIBarButtonItem) {
+        refresher.stopLoadMore()
+    }
 }
 
 // Refresher
@@ -103,10 +111,6 @@ extension UsersViewController: Refreshable, MoreLoadable {
                 self.models = models
                 let gotAllRecords = models.count == self.pageSize
                 self.refresher.enableLoadMore = gotAllRecords
-
-                let allIDs = self.models.map { $0.id }
-                print(allIDs)
-                print("\n\n")
 
                 self.refreshUI()
             case .failure:
@@ -138,7 +142,25 @@ extension UsersViewController: Refreshable, MoreLoadable {
 
             switch result {
             case .success(let models):
-                self.models.append(contentsOf: models)
+
+                var allModels = self.models + models
+
+                //Removing duplicate elements
+                do {
+                    var seen = Set<Model>()
+
+                    allModels = allModels.compactMap { element -> Model? in
+                        guard !seen.contains(element) else {
+                            return nil
+                        }
+
+                        seen.insert(element)
+                        return element
+                    }
+                }
+
+                self.models = allModels
+
                 let gotAllRecords = models.count == self.pageSize
                 self.refresher.enableLoadMore = gotAllRecords
 
