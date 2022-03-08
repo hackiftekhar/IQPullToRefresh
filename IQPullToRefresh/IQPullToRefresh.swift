@@ -297,7 +297,7 @@ extension IQPullToRefresh {
                         beginLoadMoreAnimation()
                         triggerSafeLoadMore(type: .reachAtEnd)
                     } else {
-                        if progress == 0 {
+                        if progress == 0 || loadMoreControl.mode == .scrollLimitReached {
                             loadMoreControl.refreshState = .none
                         } else {
                             loadMoreControl.refreshState = .pulling(progress)
