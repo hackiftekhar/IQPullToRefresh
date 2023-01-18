@@ -35,6 +35,8 @@
 		C0C12E9B25D1210700140363 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0C12E9A25D1210700140363 /* UserCell.xib */; };
 		C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */; };
 		C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */; };
+		C0FD98DD2977FFBC00420D64 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FD98DC2977FFBC00420D64 /* UserViewModel.swift */; };
+		C0FD98E129780A5000420D64 /* UsersViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FD98E029780A5000420D64 /* UsersViewModelController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +74,8 @@
 		C0C12E9A25D1210700140363 /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		C0C12EE725D153DB00140363 /* ProgressPullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPullToRefresh.swift; sourceTree = "<group>"; };
 		C0D1619A25D3B66C0045BF5C /* CustomPullToRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPullToRefresh.swift; sourceTree = "<group>"; };
+		C0FD98DC2977FFBC00420D64 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		C0FD98E029780A5000420D64 /* UsersViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewModelController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +164,7 @@
 		C0C12E2625D11D5300140363 /* Pull To Refresh Demo */ = {
 			isa = PBXGroup;
 			children = (
+				C0FD98DB2977FFAD00420D64 /* ViewModel */,
 				C0C12EE625D153CD00140363 /* Customization */,
 				C0C12E6125D11DDD00140363 /* Model */,
 				C0C12E5D25D11DDA00140363 /* Cell */,
@@ -167,6 +172,7 @@
 				C0C12E2725D11D5300140363 /* AppDelegate.swift */,
 				C0C12E2925D11D5300140363 /* SceneDelegate.swift */,
 				C0C12E6F25D11F5100140363 /* UsersViewController.swift */,
+				C0FD98E029780A5000420D64 /* UsersViewModelController.swift */,
 				C0C12E2D25D11D5300140363 /* Main.storyboard */,
 				C0C12E3025D11D5300140363 /* Assets.xcassets */,
 				C0C12E3225D11D5300140363 /* LaunchScreen.storyboard */,
@@ -220,6 +226,14 @@
 				C0B61D3025DE7C3E00D4F126 /* PreloadActivityIndicatorView.swift */,
 			);
 			path = Customization;
+			sourceTree = "<group>";
+		};
+		C0FD98DB2977FFAD00420D64 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C0FD98DC2977FFBC00420D64 /* UserViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0FD98E129780A5000420D64 /* UsersViewModelController.swift in Sources */,
 				C0C12E5B25D11DD600140363 /* IQAPIClient+APIPath.swift in Sources */,
 				C0A2702C25D5656700363622 /* PullToMakeSoup.swift in Sources */,
 				C0C12E5F25D11DDA00140363 /* UserCell.swift in Sources */,
@@ -359,6 +374,7 @@
 				C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */,
 				C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */,
 				C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */,
+				C0FD98DD2977FFBC00420D64 /* UserViewModel.swift in Sources */,
 				C0C12E6325D11DDD00140363 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -48,15 +48,12 @@ extension UIRefreshControl: IQAnimatableRefresh {
                 if isRefreshing {
                     endRefreshing()
                 }
-            case .pulling:
-                break
-            case .eligible:
+            case .pulling, .eligible:
                 break
             case .refreshing:
                 if !isRefreshing {
                     beginRefreshing()
                 }
-                break
             }
         }
     }

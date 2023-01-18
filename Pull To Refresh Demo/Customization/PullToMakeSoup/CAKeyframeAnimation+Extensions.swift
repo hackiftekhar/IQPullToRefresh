@@ -7,6 +7,8 @@
 //
 
 import CoreGraphics
+import QuartzCore
+import UIKit
 
 enum AnimationType: String {
     case Rotation = "transform.rotation.z"
