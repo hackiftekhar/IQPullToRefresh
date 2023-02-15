@@ -25,14 +25,23 @@ import UIKit
 open class IQRefreshAbstractWrapper<T: Decodable> {
 
     public let pullToRefresh: IQPullToRefresh
-    public var pageOffset: Int
-    public var pageSize: Int
+    public var pageOffset: Int {
+        didSet {
+            self.models = []
+        }
+    }
+    public var pageSize: Int {
+        didSet {
+            self.models = []
+        }
+    }
 
     public var modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)?
 
     public var models: [T] {
         didSet {
             pullToRefresh.enableLoadMore = !models.isEmpty && models.count.isMultiple(of: pageSize)
+            self.modelsUpdatedObserver?(.success(self.models))
         }
     }
 
@@ -41,7 +50,7 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
     }
 
     public init(scrollView: UIScrollView, pageOffset: Int, pageSize: Int,
-                modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)?) {
+                modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
         precondition(pageSize > 0)
 
         self.models = []
@@ -71,9 +80,15 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         loadingBegin(true)
 
         self.request(page: pageOffset, size: pageSize, completion: { [weak self] result in
-            loadingFinished(true)
 
             guard let self = self else {
+                return
+            }
+            let isReallyRefreshing: Bool = self.pullToRefresh.enablePullToRefresh && self.pullToRefresh.isRefreshing
+
+            loadingFinished(true)
+
+            guard isReallyRefreshing else {
                 return
             }
 
@@ -81,10 +96,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             case .success(let models):
 
                 self.models = models
-
                 self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
-
-                self.modelsUpdatedObserver?(.success(self.models))
             case .failure(let error):
                 self.modelsUpdatedObserver?(.failure(error))
             }
@@ -106,9 +118,16 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         let pageIndex = (models.count / pageSize) + pageOffset
 
         self.request(page: pageIndex, size: pageSize, completion: { [weak self] result in
-            loadingFinished(true)
 
             guard let self = self else {
+                return
+            }
+
+            let isReallyMoreLoading: Bool = self.pullToRefresh.enableLoadMore && self.pullToRefresh.isMoreLoading
+
+            loadingFinished(true)
+
+            guard isReallyMoreLoading else {
                 return
             }
 
@@ -118,8 +137,6 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
                 self.models += models
 
                 self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
-
-                self.modelsUpdatedObserver?(.success(self.models))
             case .failure(let error):
                 self.modelsUpdatedObserver?(.failure(error))
             }

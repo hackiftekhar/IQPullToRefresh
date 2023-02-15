@@ -22,7 +22,7 @@ class UsersViewModelController: UITableViewController {
     @IBOutlet var clearButton: UIBarButtonItem!
 
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
-    private lazy var userViewModel: UserViewModel = UserViewModel(scrollView: tableView, pageOffset: 1, pageSize: pageSize, modelsUpdatedObserver:nil)
+    private lazy var userViewModel: UserViewModel = UserViewModel(scrollView: tableView, pageOffset: 1, pageSize: pageSize)
 
     override func viewDidLoad() {
         super.viewDidLoad()
