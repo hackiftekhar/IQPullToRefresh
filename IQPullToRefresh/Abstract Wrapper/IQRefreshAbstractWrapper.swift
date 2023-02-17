@@ -24,15 +24,30 @@ import UIKit
 
 open class IQRefreshAbstractWrapper<T: Decodable> {
 
+    public enum PageOffsetStyle {
+
+        // It behave like index: Page index starts with 0 as 1st page, and increment by 1 with every next page like 1, 2, 3, 4 etc
+        case pageFrom0
+
+        // It behave like a number: Page number starts with 1 as 1st page, and increment by 1 with every next page like 1, 2, 3, 4 etc
+        case pageFrom1
+
+        // Offset number records to skip. For example it's 0 for the 1st page of 10 records, and 10 for 2nd page, 20 fo 3rd page etc
+        case offsetFrom0
+
+        // Offset the record number from where it should start return next records. For example it's 1 for the 1st page of 10 records, and 11 for 2nd page, 21 fo 3rd page etc
+        case offsetFrom1
+    }
+
     public let pullToRefresh: IQPullToRefresh
-    public var pageOffset: Int {
+    public var pageOffsetSyle: PageOffsetStyle {
         didSet {
-            self.models = []
+            models = []
         }
     }
     public var pageSize: Int {
         didSet {
-            self.models = []
+            models = []
         }
     }
 
@@ -49,19 +64,19 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
         fatalError("Cannot use init function directly")
     }
 
-    public init(scrollView: UIScrollView, pageOffset: Int, pageSize: Int,
+    public init(scrollView: UIScrollView, pageOffsetSyle: PageOffsetStyle, pageSize: Int,
                 modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
         precondition(pageSize > 0)
 
-        self.models = []
-        self.pageOffset = pageOffset
+        models = []
+        self.pageOffsetSyle = pageOffsetSyle
         self.pageSize = pageSize
         self.modelsUpdatedObserver = modelsUpdatedObserver
-        self.pullToRefresh = IQPullToRefresh(scrollView: scrollView)
+        pullToRefresh = IQPullToRefresh(scrollView: scrollView)
         defer {
-            self.pullToRefresh.refresher = self
-            self.pullToRefresh.moreLoader = self
-            self.pullToRefresh.enablePullToRefresh = true
+            pullToRefresh.refresher = self
+            pullToRefresh.moreLoader = self
+            pullToRefresh.enablePullToRefresh = true
         }
     }
 
@@ -79,7 +94,19 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         pullToRefresh.enableLoadMore = false
         loadingBegin(true)
 
-        self.request(page: pageOffset, size: pageSize, completion: { [weak self] result in
+        let page: Int
+        switch pageOffsetSyle {
+        case .pageFrom0:
+            page = 0
+        case .pageFrom1:
+            page = 1
+        case .offsetFrom0:
+            page = 0
+        case .offsetFrom1:
+            page = 1
+        }
+
+        self.request(page: page, size: pageSize, completion: { [weak self] result in
 
             guard let self = self else {
                 return
@@ -110,14 +137,25 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         //If it's not multiple of pageSize then probably we've loaded all records
         guard models.count.isMultiple(of: pageSize) else {
             loadingBegin(false)
+            pullToRefresh.enableLoadMore = false
             return
         }
 
         loadingBegin(true)
 
-        let pageIndex = (models.count / pageSize) + pageOffset
+        let page: Int
+        switch pageOffsetSyle {
+        case .pageFrom0:
+            page = (models.count / pageSize)
+        case .pageFrom1:
+            page = (models.count / pageSize) + 1
+        case .offsetFrom0:
+            page = models.count
+        case .offsetFrom1:
+            page = models.count + 1
+        }
 
-        self.request(page: pageIndex, size: pageSize, completion: { [weak self] result in
+        self.request(page: page, size: pageSize, completion: { [weak self] result in
 
             guard let self = self else {
                 return
