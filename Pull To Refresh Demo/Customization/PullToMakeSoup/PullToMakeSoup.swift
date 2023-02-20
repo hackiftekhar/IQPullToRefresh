@@ -33,7 +33,9 @@ class SoupView: UIView, IQAnimatableRefresh {
     fileprivate var shadow: UIImageView!
 
     static func soapView() -> SoupView {
-        let refreshView = Bundle(for: self).loadNibNamed("SoupView", owner: nil, options: nil)!.first as! SoupView
+        guard let refreshView = Bundle(for: self).loadNibNamed("SoupView", owner: nil, options: nil)!.first as? SoupView else {
+            fatalError("can't initiate SoupView")
+        }
         return refreshView
     }
 
@@ -96,6 +98,7 @@ class SoupView: UIView, IQAnimatableRefresh {
 
     // MARK: - Helpers
     
+    // swiftlint:disable function_body_length
     func initalLayout() {
         let centerX = frame.size.width / 2
         
@@ -118,13 +121,13 @@ class SoupView: UIView, IQAnimatableRefresh {
         )
         
         carrot.addAnimation(CAKeyframeAnimation.animationWith(
-            AnimationType.Rotation,
+            AnimationType.rotation,
             values: [4.131, 5.149, 6.294],
             keyTimes: [0, 0.5, 1],
             duration: animationDuration,
             beginTime:0))
         carrot.addAnimation(CAKeyframeAnimation.animationWith(
-            AnimationType.Opacity,
+            AnimationType.opacity,
             values: [0, 1],
             keyTimes: [0, 1],
             duration: animationDuration,
@@ -137,7 +140,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         
         pan.center = CGPoint(x: centerX, y: pan.center.y)
         pan.addAnimation(CAKeyframeAnimation.animationWith(
-            AnimationType.TranslationY,
+            AnimationType.translationY,
             values: [-200, 0],
             keyTimes: [0, 0.5],
             duration: animationDuration,
@@ -169,7 +172,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         
         potato.addAnimation(
             CAKeyframeAnimation.animationWith(
-                AnimationType.Opacity,
+                AnimationType.opacity,
                 values: [0, 1],
                 keyTimes: [0, 1],
                 duration: animationDuration,
@@ -177,7 +180,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         )
         
         potato.addAnimation(CAKeyframeAnimation.animationWith(
-            AnimationType.Rotation,
+            AnimationType.rotation,
             values: [5.663, 4.836, 3.578],
             keyTimes: [0, 0.5, 1],
             duration: animationDuration,
@@ -202,7 +205,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         
         leftPea.addAnimation(
             CAKeyframeAnimation.animationWith(
-                AnimationType.Opacity,
+                AnimationType.opacity,
                 values: [0, 1],
                 keyTimes: [0, 1],
                 duration: animationDuration,
@@ -228,7 +231,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         
         rightPea.addAnimation(
             CAKeyframeAnimation.animationWith(
-                AnimationType.Opacity,
+                AnimationType.opacity,
                 values: [0, 1],
                 keyTimes: [0, 1],
                 duration: animationDuration,
@@ -265,7 +268,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         
         cover.addAnimation(
             CAKeyframeAnimation.animationWith(
-                AnimationType.Rotation,
+                AnimationType.rotation,
                 values: [2.009, 0],
                 keyTimes: [0, 1],
                 duration: animationDuration,
@@ -274,7 +277,8 @@ class SoupView: UIView, IQAnimatableRefresh {
         
         cover.layer.timeOffset = 0.0
     }
-    
+    // swiftlint:enable function_body_length
+
     func startLoading() {
         circle.center = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
         carrot.layer.timeOffset = animationDuration
@@ -296,7 +300,7 @@ class SoupView: UIView, IQAnimatableRefresh {
                 self.cover.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                 self.cover.center = CGPoint(x: self.cover.center.x - self.cover.frame.size.width/2, y: self.cover.center.y)
                 let coverRotationAnimation = CAKeyframeAnimation.animationWith(
-                    AnimationType.Rotation,
+                    AnimationType.rotation,
                     values: [0.05, 0, -0.05, 0, 0.07, -0.03, 0],
                     keyTimes: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
                     duration: 0.5,
@@ -304,7 +308,7 @@ class SoupView: UIView, IQAnimatableRefresh {
                 )
                 
                 let coverPositionAnimation = CAKeyframeAnimation.animationWith(
-                    AnimationType.TranslationY,
+                    AnimationType.translationY,
                     values: [-2, 0, -2, 1, -3, 0],
                     keyTimes: [0, 0.3, 0.5, 0.7, 0.9, 1],
                     duration: 0.5,
@@ -327,8 +331,8 @@ class SoupView: UIView, IQAnimatableRefresh {
         // Flame
         
         var lightsImages = [UIImage]()
-        for i in 1...11 {
-            let imageName = NSString(format: "Flames%.4d", i)
+        for index in 1...11 {
+            let imageName = NSString(format: "Flames%.4d", index)
             let image = UIImage(named: imageName as String, in: Bundle(for: type(of: self)), compatibleWith: nil)
             lightsImages.append(image!)
         }
@@ -339,8 +343,8 @@ class SoupView: UIView, IQAnimatableRefresh {
         let delayTime = DispatchTime.now() + Double(Int64(0.7 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
             var lightsImages = [UIImage]()
-            for i in 11...68 {
-                let imageName = NSString(format: "Flames%.4d", i)
+            for index in 11...68 {
+                let imageName = NSString(format: "Flames%.4d", index)
                 let image = UIImage(named: imageName as String, in: Bundle(for: type(of: self)), compatibleWith: nil)
                 lightsImages.append(image!)
             }
@@ -354,8 +358,8 @@ class SoupView: UIView, IQAnimatableRefresh {
     
     @objc func addBubble() {
         let radius: CGFloat = 1
-        let x = CGFloat(arc4random_uniform(UInt32(self.water.frame.size.width)))
-        let circle = UIView(frame: CGRect(x: x, y: self.water.frame.size.height, width: 2*radius, height: 2*radius))
+        let bubbleX = CGFloat(arc4random_uniform(UInt32(self.water.frame.size.width)))
+        let circle = UIView(frame: CGRect(x: bubbleX, y: self.water.frame.size.height, width: 2*radius, height: 2*radius))
         circle.layer.cornerRadius = radius
         circle.layer.borderWidth = 1
         circle.layer.masksToBounds = true
@@ -363,7 +367,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         self.water.addSubview(circle)
         UIView.animate(withDuration: 1.3, animations: {
             let radius:CGFloat = 4
-            circle.layer.frame = CGRect(x: x, y: -20, width: 2*radius, height: 2*radius)
+            circle.layer.frame = CGRect(x: bubbleX, y: -20, width: 2*radius, height: 2*radius)
             circle.layer.cornerRadius = radius
             }, completion: { _ in
                 circle.removeFromSuperview()

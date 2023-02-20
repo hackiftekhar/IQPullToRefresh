@@ -43,7 +43,8 @@ public class IQRefreshIndicatorView: UIActivityIndicatorView, IQAnimatableRefres
             switch refreshState {
             case .unknown, .none:
 
-                UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState,
+                               animations: { [weak self] in
                     self?.alpha = 0
                     self?.transform = .identity
                 }, completion: nil)
@@ -54,14 +55,16 @@ public class IQRefreshIndicatorView: UIActivityIndicatorView, IQAnimatableRefres
 
             case .pulling(let progress):
 
-                UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState,
+                               animations: { [weak self] in
                     self?.transform = .identity
                     self?.alpha = progress
                 }, completion: nil)
 
             case .eligible:
 
-                UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState,
+                               animations: { [weak self] in
                     self?.transform = .init(scaleX: 1.5, y: 1.5)
                     self?.alpha = 1
                 }, completion: nil)
@@ -73,9 +76,10 @@ public class IQRefreshIndicatorView: UIActivityIndicatorView, IQAnimatableRefres
                 if !isAnimating {
                     startAnimating()
 
-                    UIView.animate(withDuration: 2, delay: 0, options: [.beginFromCurrentState, .curveEaseOut], animations: { [weak self] in
+                    UIView.animate(withDuration: 2, delay: 0, options: [.beginFromCurrentState, .curveEaseOut],
+                                   animations: { [weak self] in
                         self?.transform = .init(rotationAngle: CGFloat.pi)
-                    }, completion:nil)
+                    }, completion: nil)
                 }
             }
         }
@@ -90,4 +94,3 @@ public class IQRefreshIndicatorView: UIActivityIndicatorView, IQAnimatableRefres
         fatalError("init(coder:) has not been implemented")
     }
 }
-

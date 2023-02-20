@@ -41,7 +41,7 @@ public enum IQRefreshTriggerStyle: Equatable {
 
     case touchRelease   // Trigger when user pull 100% and then release touch
 
-    case progressCompletion //Trigger when user pull 100%
+    case progressCompletion // Trigger when user pull 100%
 }
 
 public protocol IQAnimatableRefresh where Self: UIView {
@@ -74,7 +74,8 @@ extension IQAnimatableRefresh {
             return objc_getAssociatedObject(self, &kRefreshMode) as? IQRefreshTriggerMode ?? .userInteraction
         }
         set {
-            objc_setAssociatedObject(self, &kRefreshMode, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &kRefreshMode, newValue,
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -83,7 +84,8 @@ extension IQAnimatableRefresh {
             return objc_getAssociatedObject(self, &kRefreshStyle) as? IQRefreshTriggerStyle ?? .touchRelease
         }
         set {
-            objc_setAssociatedObject(self, &kRefreshStyle, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &kRefreshStyle, newValue,
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -92,7 +94,8 @@ extension IQAnimatableRefresh {
             return objc_getAssociatedObject(self, &kPreloadOffset) as? CGFloat ?? 0
         }
         set {
-            objc_setAssociatedObject(self, &kPreloadOffset, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &kPreloadOffset, newValue,
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }

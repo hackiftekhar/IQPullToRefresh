@@ -54,7 +54,7 @@ public extension IQPullToRefresh {
             return
         }
 
-        var contentInset = scrollView.contentInset
+        var contentInset: UIEdgeInsets = scrollView.contentInset
         contentInset.bottom += loadMoreControl.refreshHeight
 
         loadMoreControl.refreshState = .refreshing
@@ -70,7 +70,7 @@ public extension IQPullToRefresh {
             return
         }
 
-        var contentInset = scrollView.contentInset
+        var contentInset: UIEdgeInsets = scrollView.contentInset
         contentInset.bottom -= loadMoreControl.refreshHeight
 
         UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
@@ -92,7 +92,7 @@ public extension IQPullToRefresh {
                 } else {
                     self?.endLoadMoreAnimation()
                 }
-            }, loadingFinished: { [weak self] (success) in
+            }, loadingFinished: { [weak self] _ in
                 self?.endLoadMoreAnimation()
             })
         }

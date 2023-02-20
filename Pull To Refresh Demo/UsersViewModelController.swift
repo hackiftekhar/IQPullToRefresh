@@ -22,10 +22,14 @@ class UsersViewModelController: UITableViewController {
     @IBOutlet var clearButton: UIBarButtonItem!
 
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
-    private lazy var userViewModel: UserViewModel = UserViewModel(scrollView: tableView, pageOffsetSyle: .pageFrom1, pageSize: pageSize)
+    private lazy var userViewModel: UserViewModel = UserViewModel(scrollView: tableView,
+                                                                  pageOffsetSyle: .pageFrom1,
+                                                                  pageSize: pageSize)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        (userViewModel.pullToRefresh.loadMoreControl as? UIActivityIndicatorView)?.style = .large
 
         userViewModel.modelsUpdatedObserver = { result in
             switch result {
@@ -36,7 +40,16 @@ class UsersViewModelController: UITableViewController {
             }
         }
 
-        refreshUI(animated: false)
+        userViewModel.loadingObserver = { result in
+            switch result {
+            case .none:
+                print("None")
+            case .refreshing:
+                print("Refreshing")
+            case .moreLoading:
+                print("More Loading")
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

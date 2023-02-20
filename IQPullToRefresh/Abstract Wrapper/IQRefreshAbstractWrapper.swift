@@ -24,18 +24,28 @@ import UIKit
 
 open class IQRefreshAbstractWrapper<T: Decodable> {
 
+    public enum RefreshingState {
+        case none
+        case refreshing
+        case moreLoading
+    }
+
     public enum PageOffsetStyle {
 
-        // It behave like index: Page index starts with 0 as 1st page, and increment by 1 with every next page like 1, 2, 3, 4 etc
+        // It behave like index: Page index starts with 0 as 1st page,
+        // and increment by 1 with every next page like 1, 2, 3, 4 etc
         case pageFrom0
 
-        // It behave like a number: Page number starts with 1 as 1st page, and increment by 1 with every next page like 1, 2, 3, 4 etc
+        // It behave like a number: Page number starts with 1 as 1st page,
+        // and increment by 1 with every next page like 1, 2, 3, 4 etc
         case pageFrom1
 
-        // Offset number records to skip. For example it's 0 for the 1st page of 10 records, and 10 for 2nd page, 20 fo 3rd page etc
+        // Offset number records to skip. For example it's 0 for the 1st page of 10 records,
+        // and 10 for 2nd page, 20 fo 3rd page etc
         case offsetFrom0
 
-        // Offset the record number from where it should start return next records. For example it's 1 for the 1st page of 10 records, and 11 for 2nd page, 21 fo 3rd page etc
+        // Offset the record number from where it should start return next records.
+        // For example it's 1 for the 1st page of 10 records, and 11 for 2nd page, 21 fo 3rd page etc
         case offsetFrom1
     }
 
@@ -51,6 +61,7 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
         }
     }
 
+    public var loadingObserver: ((_ result: RefreshingState) -> Void)?
     public var modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)?
 
     public var models: [T] {
@@ -68,16 +79,17 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
                 modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
         precondition(pageSize > 0)
 
-        models = []
-        self.pageOffsetSyle = pageOffsetSyle
-        self.pageSize = pageSize
-        self.modelsUpdatedObserver = modelsUpdatedObserver
-        pullToRefresh = IQPullToRefresh(scrollView: scrollView)
         defer {
             pullToRefresh.refresher = self
             pullToRefresh.moreLoader = self
             pullToRefresh.enablePullToRefresh = true
         }
+
+        models = []
+        self.pageOffsetSyle = pageOffsetSyle
+        self.pageSize = pageSize
+        self.modelsUpdatedObserver = modelsUpdatedObserver
+        pullToRefresh = IQPullToRefresh(scrollView: scrollView)
     }
 
     open func request(page: Int, size: Int, completion: @escaping (Result<[T], Error>) -> Void) {
@@ -93,6 +105,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
         pullToRefresh.enableLoadMore = false
         loadingBegin(true)
+        loadingObserver?(.refreshing)
 
         let page: Int
         switch pageOffsetSyle {
@@ -114,6 +127,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             let isReallyRefreshing: Bool = self.pullToRefresh.enablePullToRefresh && self.pullToRefresh.isRefreshing
 
             loadingFinished(true)
+            self.loadingObserver?(.none)
 
             guard isReallyRefreshing else {
                 return
@@ -134,7 +148,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
                                   loadingBegin: @escaping (Bool) -> Void,
                                   loadingFinished: @escaping (Bool) -> Void) {
 
-        //If it's not multiple of pageSize then probably we've loaded all records
+        // If it's not multiple of pageSize then probably we've loaded all records
         guard models.count.isMultiple(of: pageSize) else {
             loadingBegin(false)
             pullToRefresh.enableLoadMore = false
@@ -142,6 +156,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         }
 
         loadingBegin(true)
+        loadingObserver?(.moreLoading)
 
         let page: Int
         switch pageOffsetSyle {
@@ -164,6 +179,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             let isReallyMoreLoading: Bool = self.pullToRefresh.enableLoadMore && self.pullToRefresh.isMoreLoading
 
             loadingFinished(true)
+            self.loadingObserver?(.none)
 
             guard isReallyMoreLoading else {
                 return

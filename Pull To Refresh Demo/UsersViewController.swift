@@ -56,9 +56,6 @@ class UsersViewController: UITableViewController {
 //        newLoadMoreIndicatorView.hidesWhenStopped = false
 //        newLoadMoreIndicatorView.color = UIColor.purple
 //        refresher.loadMoreControl = newLoadMoreIndicatorView
-
-        refreshUI(animated: false)
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +101,13 @@ extension UsersViewController: Refreshable, MoreLoadable {
                 return
             }
 
+            let isReallyRefreshing: Bool = self.refresher.enablePullToRefresh && self.refresher.isRefreshing
+
             loadingFinished(true)
+
+            guard isReallyRefreshing else {
+                return
+            }
 
             switch result {
             case .success(let models):
@@ -123,7 +126,7 @@ extension UsersViewController: Refreshable, MoreLoadable {
                            loadingBegin: @escaping (Bool) -> Void,
                            loadingFinished: @escaping (Bool) -> Void) {
 
-        //If it's not multiple of 10 then probably we've loaded all records
+        // If it's not multiple of 10 then probably we've loaded all records
         guard models.count.isMultiple(of: pageSize) else {
             loadingBegin(false)
             return
@@ -138,14 +141,20 @@ extension UsersViewController: Refreshable, MoreLoadable {
                 return
             }
 
+            let isReallyMoreLoading: Bool = self.refresher.enableLoadMore && self.refresher.isMoreLoading
+
             loadingFinished(true)
+
+            guard isReallyMoreLoading else {
+                return
+            }
 
             switch result {
             case .success(let models):
 
                 var allModels = self.models + models
 
-                //Removing duplicate elements
+                // Removing duplicate elements
                 do {
                     var seen = Set<Model>()
 

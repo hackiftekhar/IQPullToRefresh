@@ -23,19 +23,19 @@ struct User: Decodable, Hashable {
     }
 
     let id: Int
-    var first_name: String
-    var last_name: String
+    var firstName: String
+    var lastName: String
     var email: String
     var avatar: URL?
 
     var name: String {
-        return [first_name, last_name].joined(separator: " ")
+        return [firstName, lastName].joined(separator: " ")
     }
 
     enum CodingKeys: String, CodingKey {
         case id = "id"
-        case first_name = "first_name"
-        case last_name = "last_name"
+        case firstName = "first_name"
+        case lastName = "last_name"
         case email = "email"
         case avatar = "avatar"
     }
@@ -45,8 +45,8 @@ struct User: Decodable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         id = try container.decode(Int.self, forKey: .id)
-        first_name = try container.decode(String.self, forKey: .first_name)
-        last_name = try container.decode(String.self, forKey: .last_name)
+        firstName = try container.decode(String.self, forKey: .firstName)
+        lastName = try container.decode(String.self, forKey: .lastName)
         email = try container.decode(String.self, forKey: .email)
         avatar = try container.decodeIfPresent(URL.self, forKey: .avatar)
     }

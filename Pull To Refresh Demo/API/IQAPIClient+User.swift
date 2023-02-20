@@ -12,7 +12,8 @@ import Alamofire
 extension IQAPIClient {
 
     @discardableResult
-    static func users(page: Int, perPage: Int, completion: @escaping (_ result: Swift.Result<[User], Error>) -> Void) -> DataRequest {
+    static func users(page: Int, perPage: Int,
+                      completion: @escaping (_ result: Swift.Result<[User], Error>) -> Void) -> DataRequest {
 //        let delay = page <= 1 ? 5 : 5
         let delay = 2
         let parameters = ["delay": delay, "page": page, "per_page": perPage]
@@ -21,7 +22,8 @@ extension IQAPIClient {
     }
 
     @discardableResult
-    static func user(id: Int, completion: @escaping (_ result: Swift.Result<User, Error>) -> Void) -> DataRequest {
+    static func user(id: Int,
+                     completion: @escaping (_ result: Swift.Result<User, Error>) -> Void) -> DataRequest {
         let parameters = ["delay": 2, "per_page": 10]
         let path = APIPath.users.rawValue + "/\(id)"
         return sendRequest(path: path, parameters: parameters, completionHandler: completion)

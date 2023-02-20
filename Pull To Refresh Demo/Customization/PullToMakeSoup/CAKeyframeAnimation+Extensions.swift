@@ -11,10 +11,10 @@ import QuartzCore
 import UIKit
 
 enum AnimationType: String {
-    case Rotation = "transform.rotation.z"
-    case Opacity = "opacity"
-    case TranslationX = "transform.translation.x"
-    case TranslationY = "transform.translation.y"
+    case rotation = "transform.rotation.z"
+    case opacity = "opacity"
+    case translationX = "transform.translation.x"
+    case translationY = "transform.translation.y"
 }
 
 enum TimingFunction {

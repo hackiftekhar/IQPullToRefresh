@@ -24,14 +24,16 @@ import UIKit
 
 public final class IQPullToRefresh: NSObject {
 
-    // MARK:- Public properties
+    // MARK: - Public properties
 
     public private(set) var scrollView: UIScrollView
 
     public weak var refresher: Refreshable?
     public weak var moreLoader: MoreLoadable?
 
-    public var enablePullToRefresh = false {
+    private var contentOffsetObserver: NSKeyValueObservation?
+
+    public var enablePullToRefresh: Bool = false {
         didSet {
 
             assert(refresher != nil, "Cannot change `enablePullToRefresh`. Refresher is not specified.")
@@ -49,7 +51,8 @@ public final class IQPullToRefresh: NSObject {
                     scrollView.insertSubview(refreshControl, at: 0)
                     refreshControl.translatesAutoresizingMaskIntoConstraints = false
                     refreshControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-                    refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor, constant: refreshControl.refreshHeight/2).isActive = true
+                    refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor,
+                                                            constant: refreshControl.refreshHeight/2).isActive = true
 
                     if !isRefreshing {
                         refreshControl.setNeedsLayout()
@@ -85,7 +88,8 @@ public final class IQPullToRefresh: NSObject {
                 scrollView.insertSubview(refreshControl, at: 0)
                 refreshControl.translatesAutoresizingMaskIntoConstraints = false
                 refreshControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-                refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor, constant: refreshControl.refreshHeight/2).isActive = true
+                refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor,
+                                                        constant: refreshControl.refreshHeight/2).isActive = true
 
                 if !isRefreshing {
                     refreshControl.setNeedsLayout()
@@ -96,7 +100,7 @@ public final class IQPullToRefresh: NSObject {
         }
     }
 
-    public var enableLoadMore = false {
+    public var enableLoadMore: Bool = false {
         didSet {
 
             assert(moreLoader != nil, "Cannot change `enableLoadMore`. More Loader is not specified.")
@@ -109,7 +113,8 @@ public final class IQPullToRefresh: NSObject {
                 scrollView.insertSubview(loadMoreControl, at: 0)
                 loadMoreControl.translatesAutoresizingMaskIntoConstraints = false
                 loadMoreControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-                loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: -loadMoreControl.refreshHeight/2).isActive = true
+                loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor,
+                                                         constant: -loadMoreControl.refreshHeight/2).isActive = true
 
                 if !isMoreLoading {
                     loadMoreControl.setNeedsLayout()
@@ -133,7 +138,8 @@ public final class IQPullToRefresh: NSObject {
             scrollView.insertSubview(loadMoreControl, at: 0)
             loadMoreControl.translatesAutoresizingMaskIntoConstraints = false
             loadMoreControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-            loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: -loadMoreControl.refreshHeight/2).isActive = true
+            loadMoreControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.bottomAnchor,
+                                                     constant: -loadMoreControl.refreshHeight/2).isActive = true
 
             if !isMoreLoading {
                 loadMoreControl.setNeedsLayout()
@@ -143,29 +149,27 @@ public final class IQPullToRefresh: NSObject {
         }
     }
 
+    // MARK: - Private properties
+    internal static var contentOffsetObserverContext: Int = 0
+    internal static let hapticGenerator: UISelectionFeedbackGenerator = UISelectionFeedbackGenerator()
+    internal static let impactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
-    // MARK:- Private properties
-    internal static var contentOffsetObserverContext = 0
-    internal static let hapticGenerator = UISelectionFeedbackGenerator()
-    internal static let impactGenerator = UIImpactFeedbackGenerator(style: .light)
-
-    // MARK:- Public functions
+    // MARK: - Public functions
 
     deinit {
-        scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), context: &Self.contentOffsetObserverContext)
+        scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset),
+                                  context: &Self.contentOffsetObserverContext)
     }
 
     public init(scrollView: UIScrollView,
                 refresher: Refreshable? = nil,
                 moreLoader: MoreLoadable? = nil) {
 
-
         self.scrollView = scrollView
         self.refresher = refresher
         self.moreLoader = moreLoader
 
-
-        let refreshControl = UIRefreshControl()
+        let refreshControl: UIRefreshControl = UIRefreshControl()
         self.refreshControl = refreshControl
 
         let indicatorView: IQRefreshIndicatorView
@@ -177,36 +181,69 @@ public final class IQPullToRefresh: NSObject {
         }
         self.loadMoreControl = indicatorView
 
-        super.init()
-
         defer {
             self.refreshControl.refreshState = .none
             self.loadMoreControl.refreshState = .none
             refreshControl.addTarget(self, action: #selector(self.refreshControlDidRefresh), for: .valueChanged)
-            scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: &Self.contentOffsetObserverContext)
+            registerContentOffsetChangeObserver()
         }
+
+        super.init()
     }
 }
 
 extension IQPullToRefresh {
-    
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 
-        if keyPath == #keyPath(UIScrollView.contentOffset) {
+    func registerContentOffsetChangeObserver() {
+        contentOffsetObserver = scrollView.observe(\.contentOffset, changeHandler: { [weak self] _, _ in
+            self?.handleContentOffsetChange()
+        })
+    }
 
-            let newOffset = scrollView.contentOffset
-            let adjustedInset = scrollView.adjustedContentInset
-            let contentSize = scrollView.contentSize
-            let scrollViewFrame = scrollView.frame
+    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
+    private func handleContentOffsetChange() {
 
-            // Pull to refresh
-            if enablePullToRefresh, refresher != nil, !(refreshControl is UIRefreshControl), refreshControl.superview != nil, !isRefreshing {
+        let newOffset: CGPoint = scrollView.contentOffset
+        var adjustedInset: UIEdgeInsets = scrollView.adjustedContentInset
+        adjustedInset.top = adjustedInset.top.rounded(.down)
+        adjustedInset.bottom = adjustedInset.bottom.rounded(.up)
+        let contentSize: CGSize = scrollView.contentSize
+        let scrollViewFrame: CGRect = scrollView.frame
 
-                let offsetToPullToRefresh = -(adjustedInset.top + refreshControl.refreshHeight) + refreshControl.preloadOffset
-                let estimatedProgress = ((offsetToPullToRefresh + refreshControl.refreshHeight) - newOffset.y) / refreshControl.refreshHeight
+        // Pull to refresh
+        if enablePullToRefresh, refresher != nil, refreshControl.superview != nil, !isRefreshing {
 
-                let progress = max(0, min(1,estimatedProgress))
+            let finalTop: CGFloat = -(adjustedInset.top + refreshControl.refreshHeight)
+            let offsetToPullToRefresh: CGFloat = finalTop + refreshControl.preloadOffset
+            let finalOffset: CGFloat = (offsetToPullToRefresh + refreshControl.refreshHeight) - newOffset.y
+            let estimatedProgress: CGFloat = finalOffset / refreshControl.refreshHeight
 
+            let progress: CGFloat = max(0, min(1, estimatedProgress))
+
+            if let refreshControl: UIRefreshControl = refreshControl as? UIRefreshControl {
+                if !refreshControl.isRefreshing {
+                    if scrollView.isDragging == true {
+                        if newOffset.y <= (offsetToPullToRefresh + refreshControl.refreshHeight) {
+                            if progress <= 0 {
+                                refreshControl.refreshState = .none
+                            } else if progress < 1 {
+                                refreshControl.refreshState = .pulling(progress)
+                            }
+                        } else {
+                            refreshControl.refreshState = .none
+                        }
+                    } else if scrollView.isDecelerating {
+                        if progress == 0 {
+                            refreshControl.refreshState = .none
+                        } else {
+                            refreshControl.refreshState = .pulling(progress)
+                        }
+                    } else if refreshControl.refreshState != .refreshing {
+                        refreshControl.refreshState = .none
+                    }
+                }
+            } else {
                 if scrollView.isDragging == true {
 
                     if newOffset.y <= (offsetToPullToRefresh + refreshControl.refreshHeight) {
@@ -248,65 +285,72 @@ extension IQPullToRefresh {
                     refreshControl.refreshState = .none
                 }
             }
+        }
 
-            // Load more
-            if enableLoadMore, moreLoader != nil, loadMoreControl.superview != nil, !isMoreLoading {
+        // Load more
+        if enableLoadMore,
+           moreLoader != nil,
+           loadMoreControl.superview != nil,
+           !isMoreLoading,
+           refreshControl.refreshState == .none {
 
-                var offsetToLoadMore: CGFloat = 0
-                if (contentSize.height + adjustedInset.top + adjustedInset.bottom) < scrollViewFrame.height {
-                    offsetToLoadMore = -adjustedInset.top - loadMoreControl.preloadOffset
-                } else {
-                    offsetToLoadMore = (adjustedInset.bottom + contentSize.height - scrollViewFrame.height) - loadMoreControl.preloadOffset
-                }
+            var offsetToLoadMore: CGFloat = 0
+            if (contentSize.height + adjustedInset.top + adjustedInset.bottom) < scrollViewFrame.height {
+                offsetToLoadMore = -adjustedInset.top - loadMoreControl.preloadOffset
+            } else {
+                let finalBottom: CGFloat = adjustedInset.bottom + contentSize.height - scrollViewFrame.height
+                offsetToLoadMore = finalBottom - loadMoreControl.preloadOffset
+            }
 
-                if loadMoreControl.mode == .userInteraction {
-                    offsetToLoadMore += loadMoreControl.refreshHeight
-                }
+            if loadMoreControl.mode == .userInteraction {
+                offsetToLoadMore += loadMoreControl.refreshHeight
+            }
 
-                let estimatedProgress = (newOffset.y - (offsetToLoadMore - loadMoreControl.refreshHeight)) / loadMoreControl.refreshHeight
+            let finalOffset: CGFloat = newOffset.y - (offsetToLoadMore - loadMoreControl.refreshHeight)
+            let estimatedProgress: CGFloat = finalOffset / loadMoreControl.refreshHeight
 
-                let progress = max(0, min(1,estimatedProgress))
+            let progress: CGFloat = max(0, min(1, estimatedProgress))
 
-                if scrollView.isDragging == true {
+            if scrollView.isDragging == true {
 
-                    if newOffset.y >= (offsetToLoadMore - loadMoreControl.refreshHeight) {
-                        if progress >= 1 {
-                            if loadMoreControl.refreshStyle == .progressCompletion {
-                                Self.impactGenerator.impactOccurred()
-                                beginLoadMoreAnimation()
-                                triggerSafeLoadMore(type: .reachAtEnd)
-                            } else if loadMoreControl.refreshState != .eligible {
-                                loadMoreControl.refreshState = .pulling(progress)
-                                loadMoreControl.refreshState = .eligible
-                                Self.hapticGenerator.selectionChanged()
-                            }
-                        } else if progress <= 0 {
-                            loadMoreControl.refreshState = .none
-                        } else {
-                            if loadMoreControl.refreshState == .eligible {
-                                Self.hapticGenerator.selectionChanged()
-                            }
+                if newOffset.y >= (offsetToLoadMore - loadMoreControl.refreshHeight) {
+                    if progress >= 1 {
+                        if loadMoreControl.refreshStyle == .progressCompletion {
+                            Self.impactGenerator.impactOccurred()
+                            beginLoadMoreAnimation()
+                            triggerSafeLoadMore(type: .reachAtEnd)
+                        } else if loadMoreControl.refreshState != .eligible {
                             loadMoreControl.refreshState = .pulling(progress)
+                            loadMoreControl.refreshState = .eligible
+                            Self.hapticGenerator.selectionChanged()
                         }
-                    } else {
+                    } else if progress <= 0 {
                         loadMoreControl.refreshState = .none
-                    }
-                } else if scrollView.isDecelerating {
-                    if loadMoreControl.refreshState == .eligible {
-                        Self.impactGenerator.impactOccurred()
-                        beginLoadMoreAnimation()
-                        triggerSafeLoadMore(type: .reachAtEnd)
                     } else {
-                        if progress == 0 || loadMoreControl.mode == .scrollLimitReached {
-                            loadMoreControl.refreshState = .none
-                        } else {
-                            loadMoreControl.refreshState = .pulling(progress)
+                        if loadMoreControl.refreshState == .eligible {
+                            Self.hapticGenerator.selectionChanged()
                         }
+                        loadMoreControl.refreshState = .pulling(progress)
                     }
-                } else if loadMoreControl.refreshState != .refreshing {
+                } else {
                     loadMoreControl.refreshState = .none
                 }
+            } else if scrollView.isDecelerating {
+                if loadMoreControl.refreshState == .eligible {
+                    Self.impactGenerator.impactOccurred()
+                    beginLoadMoreAnimation()
+                    triggerSafeLoadMore(type: .reachAtEnd)
+                } else {
+                    if progress == 0 || loadMoreControl.mode == .scrollLimitReached {
+                        loadMoreControl.refreshState = .none
+                    } else {
+                        loadMoreControl.refreshState = .pulling(progress)
+                    }
+                }
+            } else if loadMoreControl.refreshState != .refreshing {
+                loadMoreControl.refreshState = .none
             }
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 }

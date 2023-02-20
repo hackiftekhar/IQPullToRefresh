@@ -54,8 +54,10 @@ public extension IQPullToRefresh {
             return
         }
 
-        if !(refreshControl is UIRefreshControl) {
-            var contentInset = scrollView.contentInset
+        if let refreshControl: UIRefreshControl = refreshControl as? UIRefreshControl {
+            refreshControl.refreshState = .refreshing
+        } else {
+            var contentInset: UIEdgeInsets = scrollView.contentInset
             contentInset.top += refreshControl.refreshHeight
 
             refreshControl.refreshState = .refreshing
@@ -63,8 +65,6 @@ public extension IQPullToRefresh {
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset
             }, completion: nil)
-        } else {
-            refreshControl.refreshState = .refreshing
         }
     }
 
@@ -74,17 +74,16 @@ public extension IQPullToRefresh {
             return
         }
 
-        if !(refreshControl is UIRefreshControl) {
-            var contentInset = scrollView.contentInset
+        if let refreshControl: UIRefreshControl = refreshControl as? UIRefreshControl {
+            refreshControl.refreshState = .none
+        } else {
+            var contentInset: UIEdgeInsets = scrollView.contentInset
             contentInset.top -= refreshControl.refreshHeight
 
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset
             }, completion: nil)
 
-            refreshControl.refreshState = .none
-
-        } else {
             refreshControl.refreshState = .none
         }
     }
@@ -100,7 +99,7 @@ public extension IQPullToRefresh {
                 } else {
                     self?.endPullToRefreshAnimation()
                 }
-            }, loadingFinished: { [weak self] (success) in
+            }, loadingFinished: { [weak self] _ in
                 self?.endPullToRefreshAnimation()
             })
         }

@@ -22,17 +22,43 @@
 
 import UIKit
 
-private var kRefreshState = "refreshState"
-
 extension UIRefreshControl: IQAnimatableRefresh {
 
+    private struct AssociatedKeys {
+        static var state = "state"
+        static var mode = "mode"
+        static var style = "style"
+    }
+
+    public var mode: IQRefreshTriggerMode {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.mode) as? IQRefreshTriggerMode ?? .userInteraction
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.mode, newValue,
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    public var refreshStyle: IQRefreshTriggerStyle {
+        get {
+            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.style) as? IQRefreshTriggerStyle else {
+                return .progressCompletion
+            }
+            return value
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.style, newValue,
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
     public var refreshHeight: CGFloat {
-        return -1
+        return 170
     }
 
     public var refreshState: IQAnimatableRefreshState {
         get {
-            return objc_getAssociatedObject(self, &kRefreshState) as? IQAnimatableRefreshState ?? .unknown
+            return objc_getAssociatedObject(self, &AssociatedKeys.state) as? IQAnimatableRefreshState ?? .unknown
         }
         set {
             let oldValue = refreshState
@@ -41,7 +67,8 @@ extension UIRefreshControl: IQAnimatableRefresh {
                 return
             }
 
-            objc_setAssociatedObject(self, &kRefreshState, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &AssociatedKeys.state, newValue,
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
             switch newValue {
             case .unknown, .none:
@@ -58,4 +85,3 @@ extension UIRefreshControl: IQAnimatableRefresh {
         }
     }
 }
-
