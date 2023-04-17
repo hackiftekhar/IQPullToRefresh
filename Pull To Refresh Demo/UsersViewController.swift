@@ -27,6 +27,7 @@ class UsersViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        refresher.refresh()
 
 //        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
 
