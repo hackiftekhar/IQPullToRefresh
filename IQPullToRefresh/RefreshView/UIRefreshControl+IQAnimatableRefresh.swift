@@ -84,4 +84,26 @@ extension UIRefreshControl: IQAnimatableRefresh {
             }
         }
     }
+
+    open override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if self.window != nil {
+            switch refreshState {
+            case .unknown, .none:
+                endRefreshing()
+            case .pulling, .eligible:
+                break
+            case .refreshing:
+                // When we attach the UIRefreshControl to a UITableView which is not yet added
+                // to the window hierarchy. For example when we create UITableView programmatically
+                // but haven't added to the UI or haven't moved to that particular screen yet but we
+                // triggered the refresh event programmatically.
+                // In this case we had a bug when we move to that screen later, the refresh animation
+                // doesn't show and the refresh indicator shows as stopped. To fix this bug we
+                // end refreshing and begin refreshing again to restart loading indicator animation.
+                endRefreshing()
+                beginRefreshing()
+            }
+        }
+    }
 }

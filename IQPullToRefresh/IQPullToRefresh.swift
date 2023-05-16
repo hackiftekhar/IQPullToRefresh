@@ -150,15 +150,14 @@ public final class IQPullToRefresh: NSObject {
     }
 
     // MARK: - Private properties
-    internal static var contentOffsetObserverContext: Int = 0
     internal static let hapticGenerator: UISelectionFeedbackGenerator = UISelectionFeedbackGenerator()
     internal static let impactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
     // MARK: - Public functions
 
     deinit {
-        scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset),
-                                  context: &Self.contentOffsetObserverContext)
+        contentOffsetObserver?.invalidate()
+        contentOffsetObserver = nil
     }
 
     public init(scrollView: UIScrollView,

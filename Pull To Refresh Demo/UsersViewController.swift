@@ -28,6 +28,13 @@ class UsersViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        if var viewControllers = self.tabBarController?.viewControllers {
+//            let programmaticallyVC = ProgrrammaticallyUsersViewModelController()
+//            let navController = UINavigationController(rootViewController: programmaticallyVC)
+//            navController.tabBarItem.title = "Programmatically"
+//            viewControllers.insert(navController, at: 0)
+//            self.tabBarController?.viewControllers = viewControllers
+//        }
 //        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
 
         refresher.enablePullToRefresh = true
