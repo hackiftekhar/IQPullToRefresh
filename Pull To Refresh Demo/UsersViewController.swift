@@ -27,6 +27,7 @@ class UsersViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        refresher.refresh()
 
 //        if var viewControllers = self.tabBarController?.viewControllers {
 //            let programmaticallyVC = ProgrrammaticallyUsersViewModelController()
