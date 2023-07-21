@@ -32,6 +32,10 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
 
     public enum PageOffsetStyle {
 
+        // It behave like there is no load more feature. It just fetch
+        // new records for each pull to request and that's it.
+        case none
+
         // It behave like index: Page index starts with 0 as 1st page,
         // and increment by 1 with every next page like 1, 2, 3, 4 etc
         case pageFrom0
@@ -103,12 +107,10 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
                                  loadingBegin: @escaping (Bool) -> Void,
                                  loadingFinished: @escaping (Bool) -> Void) {
 
-        pullToRefresh.enableLoadMore = false
-        loadingBegin(true)
-        loadingObserver?(.refreshing)
-
         let page: Int
         switch pageOffsetSyle {
+        case .none:
+            page = -1
         case .pageFrom0:
             page = 0
         case .pageFrom1:
@@ -118,6 +120,10 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         case .offsetFrom1:
             page = 1
         }
+
+        pullToRefresh.enableLoadMore = false
+        loadingBegin(true)
+        loadingObserver?(.refreshing)
 
         self.request(page: page, size: pageSize, completion: { [weak self] result in
 
@@ -136,8 +142,12 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
 
+                if pageOffsetSyle == .none {
+                    self.pullToRefresh.enableLoadMore = false
+                } else {
+                    self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
+                }
                 self.models = models
-                self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
             case .failure(let error):
                 self.modelsUpdatedObserver?(.failure(error))
             }
@@ -155,11 +165,11 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             return
         }
 
-        loadingBegin(true)
-        loadingObserver?(.moreLoading)
-
         let page: Int
         switch pageOffsetSyle {
+        case .none:
+            loadingBegin(false)
+            return
         case .pageFrom0:
             page = (models.count / pageSize)
         case .pageFrom1:
@@ -169,6 +179,9 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         case .offsetFrom1:
             page = models.count + 1
         }
+
+        loadingBegin(true)
+        loadingObserver?(.moreLoading)
 
         self.request(page: page, size: pageSize, completion: { [weak self] result in
 
@@ -190,7 +203,12 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
                 self.models += models
 
-                self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
+                if pageOffsetSyle == .none {
+                    self.pullToRefresh.enableLoadMore = false
+                } else {
+                    self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
+                }
+
             case .failure(let error):
                 self.modelsUpdatedObserver?(.failure(error))
             }

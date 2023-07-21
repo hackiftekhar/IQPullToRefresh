@@ -24,13 +24,13 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
     @IBOutlet var clearButton: UIBarButtonItem!
 
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
-    private lazy var userViewModel: UserViewModel = UserViewModel(scrollView: tableView,
-                                                                  pageOffsetSyle: .pageFrom1,
-                                                                  pageSize: pageSize)
+    private lazy var usersStore: UsersStore = UsersStore(scrollView: tableView,
+                                                         pageOffsetSyle: .pageFrom1,
+                                                         pageSize: pageSize)
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        userViewModel.pullToRefresh.refresh()
+        usersStore.pullToRefresh.refresh()
     }
 
     required init?(coder: NSCoder) {
@@ -71,9 +71,9 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
 
 
 
-        (userViewModel.pullToRefresh.loadMoreControl as? UIActivityIndicatorView)?.style = .large
+        (usersStore.pullToRefresh.loadMoreControl as? UIActivityIndicatorView)?.style = .large
 
-        userViewModel.modelsUpdatedObserver = { result in
+        usersStore.modelsUpdatedObserver = { result in
             switch result {
             case .success:
                 self.refreshUI(animated: true)
@@ -82,7 +82,7 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
             }
         }
 
-        userViewModel.loadingObserver = { result in
+        usersStore.loadingObserver = { result in
             switch result {
             case .none:
                 print("None")
@@ -100,24 +100,24 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
     }
 
     @IBAction func clearAction(_ sender: UIBarButtonItem) {
-        userViewModel.models = []
+        usersStore.models = []
         refreshUI()
     }
 
     @IBAction func refreshAction(_ sender: UIBarButtonItem) {
-        userViewModel.pullToRefresh.refresh()
+        usersStore.pullToRefresh.refresh()
     }
 
     @IBAction func loadMoreAction(_ sender: UIBarButtonItem) {
-        userViewModel.pullToRefresh.loadMore()
+        usersStore.pullToRefresh.loadMore()
     }
 
     @IBAction func stopRefreshAction(_ sender: UIBarButtonItem) {
-        userViewModel.pullToRefresh.stopRefresh()
+        usersStore.pullToRefresh.stopRefresh()
     }
 
     @IBAction func stopLoadMoreAction(_ sender: UIBarButtonItem) {
-        userViewModel.pullToRefresh.stopLoadMore()
+        usersStore.pullToRefresh.stopLoadMore()
     }
 }
 
@@ -128,7 +128,7 @@ extension ProgrrammaticallyUsersViewModelController: IQListViewDelegateDataSourc
             let section = IQSection(identifier: 0)
             list.append(section)
 
-            list.append(Cell.self, models: userViewModel.models, section: section)
+            list.append(Cell.self, models: usersStore.models, section: section)
         }, completion: { [weak self] in
             self?.tableView.bounces = true
         })

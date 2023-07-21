@@ -12,7 +12,7 @@ PODS:
     - Alamofire (~> 5)
   - IQListKit (1.1.1):
     - DiffableDataSources (~> 0.4.0)
-  - IQPullToRefresh (2.1.2)
+  - IQPullToRefresh (2.1.5)
   - SwiftLint (0.42.0)
 
 DEPENDENCIES:
@@ -43,9 +43,9 @@ SPEC CHECKSUMS:
   DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
   IQAPIClient: a51b907e8188eb0a3d0176b7a03ea5dab10134d2
   IQListKit: 5328d89f29fb5c8a87ede1257f095d5ceeff6937
-  IQPullToRefresh: a94fde37bd55cf0fd335a835527acc9d423e1743
+  IQPullToRefresh: 7cf2e3836bff86c1dd60d34c88cba0e93727d345
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
 PODFILE CHECKSUM: 300927bccce2d6790e0d40a1a77a1390102863d1
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

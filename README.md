@@ -259,9 +259,9 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
 ### How to use IQRefreshAbstractWrapper
 Let’s assume, we would like to get list of many users (assume 100+), but 10 record each time when user pull to refresh or if user scroll then next 10 batch with load more. We'll need to create a subclass of IQRefreshAbstractWrapper class
 
-#### UserViewModel subclass
+#### UsersStore subclass
 ```swift
-class UserViewModel: IQRefreshAbstractWrapper<User> {
+class UsersStore: IQRefreshAbstractWrapper<User> {
 
 	// Override the request function and return users based on page and size, that’s it.
   override func request(page: Int, size: Int, completion: @escaping (Result<[User], Error>) -> Void) {
@@ -276,13 +276,13 @@ You just need to create it's object and observe the modelsUpdatedObserver, when 
 ```swift
 class UsersViewModelController: UITableViewController {
 
-  private lazy var userViewModel: UserViewModel = UserViewModel(scrollView: tableView, pageOffset: 1, pageSize: 10)
+  private lazy var usersStore: UsersStore = UsersStore(scrollView: tableView, pageOffset: 1, pageSize: 10)
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    // userViewModel.pullToRefresh.enablePullToRefresh = false	// You can always customize most of the things here
-    userViewModel.modelsUpdatedObserver = { result in
+    // usersStore.pullToRefresh.enablePullToRefresh = false	// You can always customize most of the things here
+      usersStore.modelsUpdatedObserver = { result in
       switch result {
         case .success:
           self.refreshUI(animated: true)
@@ -293,7 +293,7 @@ class UsersViewModelController: UITableViewController {
   }
 
   func refreshUI(animated: Bool = true) {
-	  // Access userViewModel.models to get list of users
+	  // Access usersStore.models to get list of users
   }
 }
 ```
