@@ -81,7 +81,7 @@ open class IQRefreshAbstractWrapper<T: Decodable> {
 
     public init(scrollView: UIScrollView, pageOffsetSyle: PageOffsetStyle, pageSize: Int,
                 modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
-        precondition(pageSize > 0)
+        precondition(pageSize != 0) // This is because pageSize is used in division operation
 
         defer {
             pullToRefresh.refresher = self
@@ -171,7 +171,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             loadingBegin(false)
             return
         case .pageFrom0:
-            page = (models.count / pageSize)
+            page = models.count / pageSize
         case .pageFrom1:
             page = (models.count / pageSize) + 1
         case .offsetFrom0:
