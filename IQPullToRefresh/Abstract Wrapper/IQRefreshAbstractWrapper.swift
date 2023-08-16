@@ -142,7 +142,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
 
-                if pageOffsetSyle == .none {
+                if self.pageOffsetSyle == .none {
                     self.pullToRefresh.enableLoadMore = false
                 } else {
                     self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
@@ -203,7 +203,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
                 self.models += models
 
-                if pageOffsetSyle == .none {
+                if self.pageOffsetSyle == .none {
                     self.pullToRefresh.enableLoadMore = false
                 } else {
                     self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
