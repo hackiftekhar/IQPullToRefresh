@@ -22,7 +22,7 @@
 
 import UIKit
 
-open class IQRefreshAbstractWrapper<T: Decodable> {
+open class IQRefreshAbstractWrapper<T> {
 
     public enum RefreshingState {
         case none

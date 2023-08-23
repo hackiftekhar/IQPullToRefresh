@@ -240,7 +240,7 @@ Most of the time, the pull to refresh and load more erquirements are same like
 ## IQRefreshAbstractWrapper abstract class blueprint
 The IQRefreshAbstractWrapper mainly handles IQPullToRefresh delegate functions in most optimized way
 ```swift
-open class IQRefreshAbstractWrapper<T: Decodable> {
+open class IQRefreshAbstractWrapper<T> {
 
     public let pullToRefresh: IQPullToRefresh
     public var pageOffset: Int
