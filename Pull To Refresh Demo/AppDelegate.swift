@@ -49,13 +49,13 @@ extension AppDelegate {
             return parentController
         }
 
-        IQAPIClient.baseURL = URL(string: "https://reqres.in/api")
-        IQAPIClient.httpHeaders["Content-Type"] = "application/json"
-        IQAPIClient.httpHeaders["Accept"] = "application/json"
-        IQAPIClient.debuggingEnabled = false
+        IQAPIClient.default.baseURL = URL(string: "https://reqres.in/api")
+        IQAPIClient.default.httpHeaders["Content-Type"] = "application/json"
+        IQAPIClient.default.httpHeaders["Accept"] = "application/json"
+        IQAPIClient.default.debuggingEnabled = false
 
-        //Common error handler block is common for all requests, so we could just write UIAlertController presentation logic at single place for showing error from any API response.
-        IQAPIClient.commonErrorHandlerBlock = { (request, requestParameters, responseData, error) in
+        // Common error handler block is common for all requests, so we could just write UIAlertController presentation logic at single place for showing error from any API response.
+        IQAPIClient.default.commonErrorHandlerBlock = { (request, requestParameters, responseData, error) in
 
             switch (error as NSError).code {
             case NSURLClientError.unauthorized401.rawValue:
@@ -80,10 +80,10 @@ extension AppDelegate {
             }
         }
 
-        IQAPIClient.responseModifierBlock = { (request, response) in
+        IQAPIClient.default.responseModifierBlock = { (request, response) in
 
             guard let response = response as? [String: Any] else {
-                let error = NSError(domain: "ServerError", code: NSURLErrorBadServerResponse, userInfo: [NSLocalizedDescriptionKey: IQAPIClient.unintentedResponseErrorMessage])
+                let error = NSError(domain: "ServerError", code: NSURLErrorBadServerResponse, userInfo: [NSLocalizedDescriptionKey: IQAPIClient.default.unintentedResponseErrorMessage])
                return .error(error)
             }
 
@@ -97,7 +97,7 @@ extension AppDelegate {
             } else if let data = response["data"] as? [[String:Any]] {
                 return .success(data)
             } else {
-                let error = NSError(domain: "ServerError", code: NSURLErrorBadServerResponse, userInfo: [NSLocalizedDescriptionKey: IQAPIClient.unintentedResponseErrorMessage])
+                let error = NSError(domain: "ServerError", code: NSURLErrorBadServerResponse, userInfo: [NSLocalizedDescriptionKey: IQAPIClient.default.unintentedResponseErrorMessage])
                return .error(error)
             }
         }

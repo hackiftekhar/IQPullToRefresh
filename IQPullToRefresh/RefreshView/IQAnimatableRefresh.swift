@@ -63,38 +63,40 @@ public protocol IQAnimatableRefresh where Self: UIView {
     var refreshState: IQAnimatableRefreshState { get set }
 }
 
-private var kRefreshMode = "kRefreshMode"
-private var kRefreshStyle = "kRefreshStyle"
-private var kPreloadOffset = "kPreloadOffset"
+private struct AssociatedKeys {
+    static var mode: Int = 0
+    static var refreshStyle: Int = 0
+    static var preloadOffset: Int = 0
+}
 
 extension IQAnimatableRefresh {
 
     public var mode: IQRefreshTriggerMode {
         get {
-            return objc_getAssociatedObject(self, &kRefreshMode) as? IQRefreshTriggerMode ?? .userInteraction
+            return objc_getAssociatedObject(self, &AssociatedKeys.mode) as? IQRefreshTriggerMode ?? .userInteraction
         }
         set {
-            objc_setAssociatedObject(self, &kRefreshMode, newValue,
+            objc_setAssociatedObject(self, &AssociatedKeys.mode, newValue,
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
     public var refreshStyle: IQRefreshTriggerStyle {
         get {
-            return objc_getAssociatedObject(self, &kRefreshStyle) as? IQRefreshTriggerStyle ?? .touchRelease
+            return objc_getAssociatedObject(self, &AssociatedKeys.refreshStyle) as? IQRefreshTriggerStyle ?? .touchRelease
         }
         set {
-            objc_setAssociatedObject(self, &kRefreshStyle, newValue,
+            objc_setAssociatedObject(self, &AssociatedKeys.refreshStyle, newValue,
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
     public var preloadOffset: CGFloat {
         get {
-            return objc_getAssociatedObject(self, &kPreloadOffset) as? CGFloat ?? 0
+            return objc_getAssociatedObject(self, &AssociatedKeys.preloadOffset) as? CGFloat ?? 0
         }
         set {
-            objc_setAssociatedObject(self, &kPreloadOffset, newValue,
+            objc_setAssociatedObject(self, &AssociatedKeys.preloadOffset, newValue,
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }

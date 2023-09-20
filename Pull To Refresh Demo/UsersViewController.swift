@@ -104,7 +104,7 @@ extension UsersViewController: Refreshable, MoreLoadable {
         refresher.enableLoadMore = false
         loadingBegin(true)
 
-        IQAPIClient.users(page: 1, perPage: pageSize, completion: { [weak self] result in
+        IQAPIClient.default.users(page: 1, perPage: pageSize, completion: { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -144,7 +144,7 @@ extension UsersViewController: Refreshable, MoreLoadable {
 
         let page = (models.count / pageSize) + 1
 
-        IQAPIClient.users(page: page, perPage: pageSize, completion: { [weak self] result in
+        IQAPIClient.default.users(page: page, perPage: pageSize, completion: { [weak self] result in
             guard let self = self else {
                 return
             }

@@ -25,9 +25,9 @@ import UIKit
 extension UIRefreshControl: IQAnimatableRefresh {
 
     private struct AssociatedKeys {
-        static var state = "state"
-        static var mode = "mode"
-        static var style = "style"
+        static var state: Int = 0
+        static var mode: Int = 0
+        static var style: Int = 0
     }
 
     public var mode: IQRefreshTriggerMode {
