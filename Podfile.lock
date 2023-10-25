@@ -13,7 +13,7 @@ PODS:
   - IQListKit (3.0.0):
     - DiffableDataSources (~> 0.4.0)
     - SwiftTryCatch (~> 0.0.1)
-  - IQPullToRefresh (2.1.9)
+  - IQPullToRefresh (2.2.0)
   - SwiftLint (0.52.4)
   - SwiftTryCatch (0.0.1)
 
@@ -46,7 +46,7 @@ SPEC CHECKSUMS:
   DifferenceKit: ab185c4d7f9cef8af3fcf593e5b387fb81e999ca
   IQAPIClient: 99870c81101a8776fee0ed49d6bcf1109b5f4d87
   IQListKit: 91f14441e5cd7e74fefbedf6c62ff668e65a44da
-  IQPullToRefresh: 316ef0ac1468afb6ee9ff6ee76d877e842746893
+  IQPullToRefresh: 4a11f253df48f1ca33429bb27f7d90242f4df57f
   SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
   SwiftTryCatch: fb6d2b34abe48efd69578dac919293a44f95b481
 

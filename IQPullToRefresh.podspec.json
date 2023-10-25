@@ -22,6 +22,7 @@
       "5.9"
     ],
   "source_files": "IQPullToRefresh/**/*.{swift}",
+  "resources": "IQPullToRefresh/PrivacyInfo.xcprivacy",
   "frameworks": [
     "UIKit",
     "Foundation"
