@@ -56,7 +56,8 @@ class ProgressPullToRefresh: UILabel, IQAnimatableRefresh {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        progressView.frame = CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: progressView.frame.height))
+        progressView.frame = CGRect(origin: .zero,
+                                    size: CGSize(width: self.frame.width, height: progressView.frame.height))
     }
 
     override var intrinsicContentSize: CGSize {

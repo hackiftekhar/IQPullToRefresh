@@ -22,15 +22,16 @@
 
 import UIKit
 
-open class IQRefreshAbstractWrapper<T> {
+@MainActor
+open class IQRefreshAbstractWrapper<T: Sendable> {
 
-    public enum RefreshingState {
+    public enum RefreshingState: Sendable {
         case none
         case refreshing
         case moreLoading
     }
 
-    public enum PageOffsetStyle {
+    public enum PageOffsetStyle: Sendable {
 
         // It behave like there is no load more feature. It just fetch
         // new records for each pull to request and that's it.
@@ -65,8 +66,8 @@ open class IQRefreshAbstractWrapper<T> {
         }
     }
 
-    public var loadingObserver: ((_ result: RefreshingState) -> Void)?
-    public var modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)?
+    public var loadingObserver: (@MainActor (_ result: RefreshingState) -> Void)?
+    public var modelsUpdatedObserver: (@MainActor (_ result: Swift.Result<[T], Error>) -> Void)?
 
     public var models: [T] {
         didSet {
@@ -80,7 +81,7 @@ open class IQRefreshAbstractWrapper<T> {
     }
 
     public init(scrollView: UIScrollView, pageOffsetSyle: PageOffsetStyle, pageSize: Int,
-                modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
+                modelsUpdatedObserver: (@Sendable (_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
         precondition(pageSize != 0) // This is because pageSize is used in division operation
 
         defer {
@@ -96,16 +97,17 @@ open class IQRefreshAbstractWrapper<T> {
         pullToRefresh = IQPullToRefresh(scrollView: scrollView)
     }
 
-    open func request(page: Int, size: Int, completion: @escaping (Result<[T], Error>) -> Void) {
+    open func request(page: Int, size: Int, completion: @escaping @MainActor (Result<[T], Error>) -> Void) {
         fatalError("\(#function) has not been implemented by \(Self.self)")
     }
 }
 
+@MainActor
 extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
     public func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                                 loadingBegin: @escaping (Bool) -> Void,
-                                 loadingFinished: @escaping (Bool) -> Void) {
+                                 loadingBegin: @escaping @MainActor (Bool) -> Void,
+                                 loadingFinished: @escaping @MainActor (Bool) -> Void) {
 
         let page: Int
         switch pageOffsetSyle {
@@ -154,9 +156,10 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         })
     }
 
+    // swiftlint:disable cyclomatic_complexity
     public func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
-                                  loadingBegin: @escaping (Bool) -> Void,
-                                  loadingFinished: @escaping (Bool) -> Void) {
+                                  loadingBegin: @escaping @MainActor (Bool) -> Void,
+                                  loadingFinished: @escaping @MainActor (Bool) -> Void) {
 
         // If it's not multiple of pageSize then probably we've loaded all records
         guard models.count.isMultiple(of: pageSize) else {
@@ -214,4 +217,5 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             }
         })
     }
+    // swiftlint:enable cyclomatic_complexity
 }

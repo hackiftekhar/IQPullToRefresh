@@ -11,7 +11,7 @@ import IQAPIClient
 
 class UsersStore: IQRefreshAbstractWrapper<User> {
 
-    override func request(page: Int, size: Int, completion: @escaping (Result<[User], Error>) -> Void) {
+    override func request(page: Int, size: Int, completion: @MainActor @escaping (Result<[User], Error>) -> Void) {
         IQAPIClient.default.users(page: page, perPage: size, completion: completion)
     }
 }

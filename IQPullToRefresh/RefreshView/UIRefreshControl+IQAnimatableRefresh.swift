@@ -22,8 +22,10 @@
 
 import UIKit
 
+@MainActor
 extension UIRefreshControl: IQAnimatableRefresh {
 
+    @MainActor
     private struct AssociatedKeys {
         static var state: Int = 0
         static var mode: Int = 0

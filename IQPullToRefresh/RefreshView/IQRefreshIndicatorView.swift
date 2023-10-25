@@ -22,8 +22,7 @@
 
 import UIKit
 
-private var kRefreshState = "refreshState"
-
+@MainActor
 public class IQRefreshIndicatorView: UIActivityIndicatorView, IQAnimatableRefresh {
 
     public var mode: IQRefreshTriggerMode = .scrollLimitReached

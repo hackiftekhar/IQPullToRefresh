@@ -84,7 +84,7 @@ class CustomPullToRefresh: UIView, IQAnimatableRefresh {
 
     let imageView = UIImageView(image: UIImage(named: "arrow"))
     let label = UILabel()
-    let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    let activityIndicatorView = UIActivityIndicatorView(style: .medium)
     let stackView = UIStackView()
     override init(frame: CGRect) {
         super.init(frame: frame)

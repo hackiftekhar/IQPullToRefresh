@@ -52,11 +52,6 @@ class UsersViewModelController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        refresher.refresh()
-    }
-
     @IBAction func clearAction(_ sender: UIBarButtonItem) {
         usersStore.models = []
         refreshUI()

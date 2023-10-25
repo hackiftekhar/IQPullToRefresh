@@ -22,16 +22,19 @@
 
 import UIKit
 
+@MainActor
 public protocol MoreLoadable: AnyObject {
 
+    @MainActor
     func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
-                           loadingBegin: @escaping (_ success: Bool) -> Void,
-                           loadingFinished: @escaping (_ success: Bool) -> Void)
+                           loadingBegin: @escaping @MainActor (_ success: Bool) -> Void,
+                           loadingFinished: @escaping @MainActor (_ success: Bool) -> Void)
 }
 
+@MainActor
 public extension IQPullToRefresh {
 
-    enum LoadMoreType {
+    enum LoadMoreType: Sendable {
         case manual
         case reachAtEnd
     }
@@ -82,7 +85,7 @@ public extension IQPullToRefresh {
 
     internal func triggerSafeLoadMore(type: LoadMoreType) {
 
-        if enableLoadMore, (!isMoreLoading || type == .reachAtEnd), let moreLoader = moreLoader {
+        if enableLoadMore, !isMoreLoading || type == .reachAtEnd, let moreLoader = moreLoader {
 
             moreLoader.loadMoreTriggered(type: type, loadingBegin: { [weak self] (success) in
                 if success {

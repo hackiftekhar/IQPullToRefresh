@@ -22,7 +22,7 @@
 
 import UIKit
 
-public enum IQAnimatableRefreshState: Equatable {
+public enum IQAnimatableRefreshState: Equatable, Sendable {
     case unknown            // Unknown state for initialization
     case none               // refreshControler is not active
     case pulling(CGFloat)   // Pulling the refreshControl
@@ -30,45 +30,53 @@ public enum IQAnimatableRefreshState: Equatable {
     case refreshing         // Triggered refreshing
 }
 
-public enum IQRefreshTriggerMode {
+public enum IQRefreshTriggerMode: Sendable {
 
     case userInteraction    // Trigger when user manually pull (load more)
 
     case scrollLimitReached // Trigger when the scrollView reach at the end (load more)
 }
 
-public enum IQRefreshTriggerStyle: Equatable {
+public enum IQRefreshTriggerStyle: Equatable, Sendable {
 
     case touchRelease   // Trigger when user pull 100% and then release touch
 
     case progressCompletion // Trigger when user pull 100%
 }
 
+@MainActor
 public protocol IQAnimatableRefresh where Self: UIView {
 
     // Default is userInteraction
+    @MainActor
     var mode: IQRefreshTriggerMode { get set }
 
     // Default is touchRelease
+    @MainActor
     var refreshStyle: IQRefreshTriggerStyle { get set }
 
     // Default is 0
+    @MainActor
     var preloadOffset: CGFloat { get set }
 
     // Height of the refreshControl
+    @MainActor
     var refreshHeight: CGFloat { get }
 
     // Changes of the refreshControl state
     // You must implement didSet and do your UI updates based on the state
+    @MainActor
     var refreshState: IQAnimatableRefreshState { get set }
 }
 
+@MainActor
 private struct AssociatedKeys {
     static var mode: Int = 0
     static var refreshStyle: Int = 0
     static var preloadOffset: Int = 0
 }
 
+@MainActor
 extension IQAnimatableRefresh {
 
     public var mode: IQRefreshTriggerMode {
@@ -83,7 +91,11 @@ extension IQAnimatableRefresh {
 
     public var refreshStyle: IQRefreshTriggerStyle {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.refreshStyle) as? IQRefreshTriggerStyle ?? .touchRelease
+            if let value = objc_getAssociatedObject(self, &AssociatedKeys.refreshStyle) as? IQRefreshTriggerStyle {
+                return value
+            } else {
+                return .touchRelease
+            }
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.refreshStyle, newValue,

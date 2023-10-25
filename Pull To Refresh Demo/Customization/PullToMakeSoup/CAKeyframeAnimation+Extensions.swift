@@ -30,26 +30,26 @@ func mediaTimingFunction(_ function: TimingFunction) -> CAMediaTimingFunction {
     }
 }
 
-
 extension CAKeyframeAnimation {
     class func animationWith(
         _ type: AnimationType,
-        values:[Double],
-        keyTimes:[Double],
+        values: [Double],
+        keyTimes: [Double],
         duration: Double,
         beginTime: Double) -> CAKeyframeAnimation {
-                        
+
         let animation = CAKeyframeAnimation(keyPath: type.rawValue)
         animation.values = values
         animation.keyTimes = keyTimes as [NSNumber]?
         animation.duration = duration
         animation.beginTime = beginTime
         animation.timingFunction = CAMediaTimingFunction(name: .linear)
-            
+
         return animation
     }
-    
-    class func animationPosition(_ path: CGPath, duration: Double, timingFunction: TimingFunction, beginTime: Double) -> CAKeyframeAnimation {
+
+    class func animationPosition(_ path: CGPath, duration: Double,
+                                 timingFunction: TimingFunction, beginTime: Double) -> CAKeyframeAnimation {
         let animation = CAKeyframeAnimation(keyPath: "position")
         animation.path = path
         animation.duration = duration
@@ -64,7 +64,7 @@ extension UIView {
         layer.add(animation, forKey: description + animation.keyPath!)
         layer.speed = 0
     }
-    
+
     func removeAllAnimations() {
         layer.removeAllAnimations()
     }

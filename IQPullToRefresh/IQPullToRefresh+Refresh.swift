@@ -22,16 +22,19 @@
 
 import UIKit
 
+@MainActor
 public protocol Refreshable: AnyObject {
 
+    @MainActor
     func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                          loadingBegin: @escaping (_ success: Bool) -> Void,
-                          loadingFinished: @escaping (_ success: Bool) -> Void)
+                          loadingBegin: @escaping @MainActor (_ success: Bool) -> Void,
+                          loadingFinished: @escaping @MainActor (_ success: Bool) -> Void)
 }
 
+@MainActor
 public extension IQPullToRefresh {
 
-    enum RefreshType {
+    enum RefreshType: Sendable {
        case manual
        case refreshControl
    }
@@ -90,7 +93,7 @@ public extension IQPullToRefresh {
 
     internal func triggerSafeRefresh(type: RefreshType) {
 
-        if enablePullToRefresh, (!isRefreshing || type == .refreshControl), let refresher = refresher {
+        if enablePullToRefresh, !isRefreshing || type == .refreshControl, let refresher = refresher {
             refresher.refreshTriggered(type: type, loadingBegin: { [weak self] (success) in
                 if success {
                     if self?.isRefreshing == false {

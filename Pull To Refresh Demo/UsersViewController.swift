@@ -30,7 +30,7 @@ class UsersViewController: UITableViewController {
         refresher.refresh()
 
 //        if var viewControllers = self.tabBarController?.viewControllers {
-//            let programmaticallyVC = ProgrrammaticallyUsersViewModelController()
+//            let programmaticallyVC = ProgrammaticUsersViewModelController()
 //            let navController = UINavigationController(rootViewController: programmaticallyVC)
 //            navController.tabBarItem.title = "Programmatically"
 //            viewControllers.insert(navController, at: 0)
@@ -66,11 +66,6 @@ class UsersViewController: UITableViewController {
 //        refresher.loadMoreControl = newLoadMoreIndicatorView
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        refresher.refresh()
-    }
-
     @IBAction func clearAction(_ sender: UIBarButtonItem) {
         models = []
         refresher.enableLoadMore = false
@@ -98,8 +93,8 @@ class UsersViewController: UITableViewController {
 extension UsersViewController: Refreshable, MoreLoadable {
 
     func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                          loadingBegin: @escaping (Bool) -> Void,
-                          loadingFinished: @escaping (Bool) -> Void) {
+                          loadingBegin: @escaping @MainActor (Bool) -> Void,
+                          loadingFinished: @escaping @MainActor (Bool) -> Void) {
 
         refresher.enableLoadMore = false
         loadingBegin(true)
@@ -131,8 +126,8 @@ extension UsersViewController: Refreshable, MoreLoadable {
     }
 
     func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
-                           loadingBegin: @escaping (Bool) -> Void,
-                           loadingFinished: @escaping (Bool) -> Void) {
+                           loadingBegin: @escaping @MainActor (Bool) -> Void,
+                           loadingFinished: @escaping @MainActor (Bool) -> Void) {
 
         // If it's not multiple of 10 then probably we've loaded all records
         guard models.count.isMultiple(of: pageSize) else {

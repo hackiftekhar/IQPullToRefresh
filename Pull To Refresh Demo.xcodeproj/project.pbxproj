@@ -3,12 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1205659DECDE9C1F0F90D5D6 /* Pods_Pull_To_Refresh_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */; };
-		C01A6B7D2A1363FD00A2D1D8 /* ProgrrammaticallyUsersViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A6B7C2A1363FD00A2D1D8 /* ProgrrammaticallyUsersViewModelController.swift */; };
+		C01A6B7D2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A6B7C2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift */; };
 		C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */; };
 		C0A2702525D5656700363622 /* CookingRefresher.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701825D5656700363622 /* CookingRefresher.xcassets */; };
 		C0A2702625D5656700363622 /* pea-from-left-path-only.svg in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701925D5656700363622 /* pea-from-left-path-only.svg */; };
@@ -44,7 +44,7 @@
 		1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pull_To_Refresh_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B487378FCBB92DCC128E71A /* Pods-Pull To Refresh Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pull To Refresh Demo.release.xcconfig"; path = "Target Support Files/Pods-Pull To Refresh Demo/Pods-Pull To Refresh Demo.release.xcconfig"; sourceTree = "<group>"; };
 		BF6BC0D7A19B454002BE4590 /* Pods-Pull To Refresh Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pull To Refresh Demo.debug.xcconfig"; path = "Target Support Files/Pods-Pull To Refresh Demo/Pods-Pull To Refresh Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		C01A6B7C2A1363FD00A2D1D8 /* ProgrrammaticallyUsersViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrrammaticallyUsersViewModelController.swift; sourceTree = "<group>"; };
+		C01A6B7C2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammaticUsersViewModelController.swift; sourceTree = "<group>"; };
 		C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAKeyframeAnimation+Extensions.swift"; sourceTree = "<group>"; };
 		C0A2701825D5656700363622 /* CookingRefresher.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CookingRefresher.xcassets; sourceTree = "<group>"; };
 		C0A2701925D5656700363622 /* pea-from-left-path-only.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "pea-from-left-path-only.svg"; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 				C0C12E2925D11D5300140363 /* SceneDelegate.swift */,
 				C0C12E6F25D11F5100140363 /* UsersViewController.swift */,
 				C0FD98E029780A5000420D64 /* UsersViewModelController.swift */,
-				C01A6B7C2A1363FD00A2D1D8 /* ProgrrammaticallyUsersViewModelController.swift */,
+				C01A6B7C2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift */,
 				C0C12E2D25D11D5300140363 /* Main.storyboard */,
 				C0C12E3025D11D5300140363 /* Assets.xcassets */,
 				C0C12E3225D11D5300140363 /* LaunchScreen.storyboard */,
@@ -398,7 +398,7 @@
 				C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */,
 				C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */,
 				C0FD98DD2977FFBC00420D64 /* UsersStore.swift in Sources */,
-				C01A6B7D2A1363FD00A2D1D8 /* ProgrrammaticallyUsersViewModelController.swift in Sources */,
+				C01A6B7D2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift in Sources */,
 				C0C12E6325D11DDD00140363 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,6 +562,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = infoenumapps;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SWIFT_MODULE_NAME)-Bridging-Header.h";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -588,6 +589,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = infoenumapps;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SWIFT_MODULE_NAME)-Bridging-Header.h";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

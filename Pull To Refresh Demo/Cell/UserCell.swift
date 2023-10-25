@@ -18,10 +18,6 @@ class UserCell: UITableViewCell, IQModelableCell {
 
     typealias Model = User
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     var model: Model? {
         didSet {
             guard let model = model else {
@@ -38,7 +34,7 @@ class UserCell: UITableViewCell, IQModelableCell {
         }
     }
 
-    static func size(for model: AnyHashable?, listView: IQListView) -> CGSize {
+    nonisolated static func size(for model: AnyHashable?, listView: IQListView) -> CGSize {
         return CGSize(width: 0, height: 80)
     }
 }

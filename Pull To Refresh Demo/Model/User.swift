@@ -16,7 +16,7 @@ import Foundation
    "avatar": "https://reqres.in/img/faces/2-image.jpg"
  }
  */
-struct User: Decodable, Hashable {
+struct User: Decodable, Hashable, Sendable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

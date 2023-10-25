@@ -1,5 +1,5 @@
 //
-//  ProgrrammaticallyUsersViewModelController.swift
+//  ProgrammaticUsersViewModelController.swift
 //  Pull To Refresh Demo
 //
 //  Created by Iftekhar on 5/16/23.
@@ -7,12 +7,11 @@
 
 import UIKit
 
-import UIKit
 import IQAPIClient
 import IQPullToRefresh
 import IQListKit
 
-class ProgrrammaticallyUsersViewModelController: UIViewController {
+class ProgrammaticUsersViewModelController: UIViewController {
 
     typealias Cell = UserCell
     typealias Model = User
@@ -36,7 +35,7 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,7 +54,6 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
         headerView.addSubview(searchBar)
         self.tableView.tableHeaderView = headerView
 
-
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
         tableView.rowHeight = UITableView.automaticDimension
@@ -68,8 +66,6 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
-
-
 
         (usersStore.pullToRefresh.loadMoreControl as? UIActivityIndicatorView)?.style = .large
 
@@ -94,11 +90,6 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        refresher.refresh()
-    }
-
     @IBAction func clearAction(_ sender: UIBarButtonItem) {
         usersStore.models = []
         refreshUI()
@@ -121,7 +112,7 @@ class ProgrrammaticallyUsersViewModelController: UIViewController {
     }
 }
 
-extension ProgrrammaticallyUsersViewModelController: IQListViewDelegateDataSource {
+extension ProgrammaticUsersViewModelController: IQListViewDelegateDataSource {
 
     func refreshUI(animated: Bool = true) {
         list.performUpdates({

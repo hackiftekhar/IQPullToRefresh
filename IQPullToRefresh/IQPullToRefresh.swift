@@ -22,6 +22,7 @@
 
 import UIKit
 
+@MainActor
 public final class IQPullToRefresh: NSObject {
 
     // MARK: - Public properties
@@ -191,11 +192,13 @@ public final class IQPullToRefresh: NSObject {
     }
 }
 
+@MainActor
 extension IQPullToRefresh {
 
     func registerContentOffsetChangeObserver() {
         contentOffsetObserver = scrollView.observe(\.contentOffset, changeHandler: { [weak self] _, _ in
-            self?.handleContentOffsetChange()
+            guard let self = self else { return }
+            handleContentOffsetChange()
         })
     }
 
@@ -352,4 +355,5 @@ extension IQPullToRefresh {
         }
     }
     // swiftlint:enable cyclomatic_complexity
+    // swiftlint:enable function_body_length
 }
