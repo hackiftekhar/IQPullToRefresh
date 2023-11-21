@@ -24,7 +24,7 @@ import UIKit
 
 public enum IQAnimatableRefreshState: Equatable, Sendable {
     case unknown            // Unknown state for initialization
-    case none               // refreshControler is not active
+    case none               // refreshController is not active
     case pulling(CGFloat)   // Pulling the refreshControl
     case eligible           // Progress is completed but touch not released
     case refreshing         // Triggered refreshing

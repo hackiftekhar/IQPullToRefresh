@@ -46,16 +46,16 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         case pageFrom1
 
         // Offset number records to skip. For example it's 0 for the 1st page of 10 records,
-        // and 10 for 2nd page, 20 fo 3rd page etc
+        // and 10 for 2nd page, 20 for 3rd page etc
         case offsetFrom0
 
         // Offset the record number from where it should start return next records.
-        // For example it's 1 for the 1st page of 10 records, and 11 for 2nd page, 21 fo 3rd page etc
+        // For example it's 1 for the 1st page of 10 records, and 11 for 2nd page, 21 for 3rd page etc
         case offsetFrom1
     }
 
     public let pullToRefresh: IQPullToRefresh
-    public var pageOffsetSyle: PageOffsetStyle {
+    public var pageOffsetStyle: PageOffsetStyle {
         didSet {
             models = []
         }
@@ -80,7 +80,7 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         fatalError("Cannot use init function directly")
     }
 
-    public init(scrollView: UIScrollView, pageOffsetSyle: PageOffsetStyle, pageSize: Int,
+    public init(scrollView: UIScrollView, pageOffsetStyle: PageOffsetStyle, pageSize: Int,
                 modelsUpdatedObserver: (@Sendable (_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
         precondition(pageSize != 0) // This is because pageSize is used in division operation
 
@@ -91,7 +91,7 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         }
 
         models = []
-        self.pageOffsetSyle = pageOffsetSyle
+        self.pageOffsetStyle = pageOffsetStyle
         self.pageSize = pageSize
         self.modelsUpdatedObserver = modelsUpdatedObserver
         pullToRefresh = IQPullToRefresh(scrollView: scrollView)
@@ -110,7 +110,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
                                  loadingFinished: @escaping @MainActor (Bool) -> Void) {
 
         let page: Int
-        switch pageOffsetSyle {
+        switch pageOffsetStyle {
         case .none:
             page = -1
         case .pageFrom0:
@@ -144,7 +144,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
 
-                if self.pageOffsetSyle == .none {
+                if self.pageOffsetStyle == .none {
                     self.pullToRefresh.enableLoadMore = false
                 } else {
                     self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
@@ -169,7 +169,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         }
 
         let page: Int
-        switch pageOffsetSyle {
+        switch pageOffsetStyle {
         case .none:
             loadingBegin(false)
             return
@@ -206,7 +206,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
                 self.models += models
 
-                if self.pageOffsetSyle == .none {
+                if self.pageOffsetStyle == .none {
                     self.pullToRefresh.enableLoadMore = false
                 } else {
                     self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)

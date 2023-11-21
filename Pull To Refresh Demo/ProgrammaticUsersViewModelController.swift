@@ -24,7 +24,7 @@ class ProgrammaticUsersViewModelController: UIViewController {
 
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
     private lazy var usersStore: UsersStore = UsersStore(scrollView: tableView,
-                                                         pageOffsetSyle: .pageFrom1,
+                                                         pageOffsetStyle: .pageFrom1,
                                                          pageSize: pageSize)
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

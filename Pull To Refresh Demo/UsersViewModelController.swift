@@ -23,7 +23,7 @@ class UsersViewModelController: UITableViewController {
 
     lazy var list = IQList(listView: tableView, delegateDataSource: self)
     private lazy var usersStore: UsersStore = UsersStore(scrollView: tableView,
-                                                         pageOffsetSyle: .pageFrom1,
+                                                         pageOffsetStyle: .pageFrom1,
                                                          pageSize: pageSize)
 
     override func viewDidLoad() {
