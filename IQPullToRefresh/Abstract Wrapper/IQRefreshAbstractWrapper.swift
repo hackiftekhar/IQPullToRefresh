@@ -67,8 +67,9 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
     }
 
     public var loadingObserver: (@MainActor (_ result: RefreshingState) -> Void)?
-    public var modelsUpdatedObserver: (@MainActor (_ result: Swift.Result<[T], Error>) -> Void)?
+    public var state: RefreshingState = .none
 
+    public var modelsUpdatedObserver: (@MainActor (_ result: Swift.Result<[T], Error>) -> Void)?
     public var models: [T] {
         didSet {
             pullToRefresh.enableLoadMore = !models.isEmpty && models.count.isMultiple(of: pageSize)
@@ -125,7 +126,8 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
         pullToRefresh.enableLoadMore = false
         loadingBegin(true)
-        loadingObserver?(.refreshing)
+        state = .refreshing
+        loadingObserver?(state)
 
         self.request(page: page, size: pageSize, completion: { [weak self] result in
 
@@ -135,7 +137,8 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             let isReallyRefreshing: Bool = self.pullToRefresh.enablePullToRefresh && self.pullToRefresh.isRefreshing
 
             loadingFinished(true)
-            self.loadingObserver?(.none)
+            state = .none
+            loadingObserver?(state)
 
             guard isReallyRefreshing else {
                 return
@@ -184,7 +187,8 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         }
 
         loadingBegin(true)
-        loadingObserver?(.moreLoading)
+        state = .moreLoading
+        loadingObserver?(state)
 
         self.request(page: page, size: pageSize, completion: { [weak self] result in
 
@@ -195,7 +199,8 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             let isReallyMoreLoading: Bool = self.pullToRefresh.enableLoadMore && self.pullToRefresh.isMoreLoading
 
             loadingFinished(true)
-            self.loadingObserver?(.none)
+            state = .none
+            loadingObserver?(state)
 
             guard isReallyMoreLoading else {
                 return
