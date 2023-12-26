@@ -12,7 +12,7 @@
     "Iftekhar Qurashi": "hack.iftekhar@gmail.com"
   },
   "platforms": {
-    "ios": "11.0"
+    "ios": "13.0"
   },
   "swift_versions": [
       "5.5",
