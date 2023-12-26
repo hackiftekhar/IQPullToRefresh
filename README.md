@@ -95,18 +95,18 @@ enum LoadMoreType {
 #### Refreshable protocol (For Pull-To-Refresh feature)
 It is used to get callback when refresh is triggered and also responsible to inform if loading has begin or loading has finished
 ```swift
-func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                      loadingBegin: @escaping (_ success: Bool) -> Void,
-                      loadingFinished: @escaping (_ success: Bool) -> Void)
+    func refreshTriggered(type: IQPullToRefresh.RefreshType,
+                          loadingBegin: @Sendable @escaping @MainActor (_ success: Bool) -> Void,
+                          loadingFinished: @Sendable @escaping @MainActor (_ success: Bool) -> Void)
 ```
 
 #### MoreLoadable protocol (For Load-More feature)
 It is used to get callback when load more is triggered and also responsible to inform if loading has begin or loading has finished
 
 ```swift
-func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
-                       loadingBegin: @escaping (_ success: Bool) -> Void,
-                       loadingFinished: @escaping (_ success: Bool) -> Void)
+    func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
+                           loadingBegin: @Sendable @escaping @MainActor (_ success: Bool) -> Void,
+                           loadingFinished: @Sendable @escaping @MainActor (_ success: Bool) -> Void)
 ```
 
 🤯 Current UsersViewController logic for load more 🥴 🤦
@@ -165,8 +165,8 @@ class UsersViewController: UITableViewController {
 }
 extension UsersViewController: Refreshable {
     func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                          loadingBegin: @escaping (Bool) -> Void,
-                          loadingFinished: @escaping (Bool) -> Void) {
+                          loadingBegin: @Sendable @escaping @MainActor (_ success: Bool) -> Void,
+                          loadingFinished: @Sendable @escaping @MainActor (_ success: Bool) -> Void) {
     loadingBegin(true)
     let pageSize = 10
 
@@ -200,8 +200,8 @@ class UsersViewController: UITableViewController {
 }
 extension UsersViewController: Refreshable, MoreLoadable {
     func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
-                           loadingBegin: @escaping (Bool) -> Void,
-                           loadingFinished: @escaping (Bool) -> Void) {
+                           loadingBegin: @Sendable @escaping @MainActor (_ success: Bool) -> Void,
+                           loadingFinished: @Sendable @escaping @MainActor (_ success: Bool) -> Void) {
     loadingBegin(true)
     let pageSize = 10
     let page = (models.count / pageSize) + 1
@@ -246,13 +246,17 @@ open class IQRefreshAbstractWrapper<T> {
     public var pageOffset: Int
     public var pageSize: Int
     public var models: [T]
-    public var modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)?
 
     public init(scrollView: UIScrollView,
-                     pageOffset: Int, pageSize: Int,
-                     modelsUpdatedObserver: ((_ result: Swift.Result<[T], Error>) -> Void)? = nil)
+                     pageOffset: Int, pageSize: Int)
 
-    open func request(page: Int, size: Int, completion: @escaping (Result<[T], Error>) -> Void)
+    public func addModelsUpdatedObserver(identifier: AnyHashable,
+                                         observer: (@Sendable @escaping @MainActor (_ result: Swift.Result<[T], Error>) -> Void))
+    public func addStateObserver(identifier: AnyHashable,
+                                 observer: (@Sendable @escaping @MainActor (_ result: RefreshingState) -> Void))
+
+    // Your subclass must override this function
+    open func request(page: Int, size: Int, completion: @Sendable @escaping @MainActor (Result<[T], Error>) -> Void)
 }
 ```
 
@@ -264,7 +268,7 @@ Let’s assume, we would like to get list of many users (assume 100+), but 10 re
 class UsersStore: IQRefreshAbstractWrapper<User> {
 
 	// Override the request function and return users based on page and size, that’s it.
-  override func request(page: Int, size: Int, completion: @escaping (Result<[User], Error>) -> Void) {
+    open func request(page: Int, size: Int, completion: @Sendable @escaping @MainActor (Result<[T], Error>) -> Void) {
 	    APIClient.users(page: page, perPage: size, completion: completion)
   }
 }
@@ -281,15 +285,15 @@ class UsersViewModelController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    // usersStore.pullToRefresh.enablePullToRefresh = false	// You can always customize most of the things here
-      usersStore.modelsUpdatedObserver = { result in
-      switch result {
-        case .success:
-          self.refreshUI(animated: true)
-        case .failure:
-          break
-      }
-    }
+        // usersStore.pullToRefresh.enablePullToRefresh = false	// You can always customize most of the things here
+        usersStore.addModelsUpdatedObserver(identifier: "\(Self.self)") { result in
+            switch result {
+            case .success:
+                self.refreshUI(animated: true)
+            case .failure:
+                break
+            }
+        }
   }
 
   func refreshUI(animated: Bool = true) {

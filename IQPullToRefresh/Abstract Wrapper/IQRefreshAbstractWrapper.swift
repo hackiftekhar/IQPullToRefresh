@@ -66,14 +66,17 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         }
     }
 
-    public var loadingObserver: (@MainActor (_ result: RefreshingState) -> Void)?
+    // swiftlint:disable line_length
+    private var stateObservers: [AnyHashable: @Sendable @MainActor (_ result: RefreshingState) -> Void] = [:]
+    private var modelsUpdateObservers: [AnyHashable: @Sendable @MainActor (_ result: Swift.Result<[T], Error>) -> Void] = [:]
+    // swiftlint:enable line_length
+
     public var state: RefreshingState = .none
 
-    public var modelsUpdatedObserver: (@MainActor (_ result: Swift.Result<[T], Error>) -> Void)?
     public var models: [T] {
         didSet {
             pullToRefresh.enableLoadMore = !models.isEmpty && models.count.isMultiple(of: pageSize)
-            self.modelsUpdatedObserver?(.success(self.models))
+            notifyModelsUpdate(update: .success(models))
         }
     }
 
@@ -81,8 +84,7 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         fatalError("Cannot use init function directly")
     }
 
-    public init(scrollView: UIScrollView, pageOffsetStyle: PageOffsetStyle, pageSize: Int,
-                modelsUpdatedObserver: (@Sendable (_ result: Swift.Result<[T], Error>) -> Void)? = nil) {
+    public init(scrollView: UIScrollView, pageOffsetStyle: PageOffsetStyle, pageSize: Int) {
         precondition(pageSize != 0) // This is because pageSize is used in division operation
 
         defer {
@@ -94,12 +96,51 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         models = []
         self.pageOffsetStyle = pageOffsetStyle
         self.pageSize = pageSize
-        self.modelsUpdatedObserver = modelsUpdatedObserver
         pullToRefresh = IQPullToRefresh(scrollView: scrollView)
     }
 
-    open func request(page: Int, size: Int, completion: @escaping @MainActor (Result<[T], Error>) -> Void) {
+    open func request(page: Int, size: Int, completion: @Sendable @escaping @MainActor (Result<[T], Error>) -> Void) {
         fatalError("\(#function) has not been implemented by \(Self.self)")
+    }
+}
+
+@MainActor
+extension IQRefreshAbstractWrapper {
+
+    // swiftlint:disable line_length
+    public func addModelsUpdatedObserver(identifier: AnyHashable,
+                                         observer: (@Sendable @escaping @MainActor (_ result: Swift.Result<[T], Error>) -> Void)) {
+        modelsUpdateObservers[identifier] = observer
+    }
+    // swiftlint:enable line_length
+
+    public func removeModelsUpdatedObserver(identifier: AnyHashable) {
+        modelsUpdateObservers[identifier] = nil
+    }
+
+    private func notifyModelsUpdate(update: Swift.Result<[T], Error>) {
+        for (_, observer) in modelsUpdateObservers {
+            observer(update)
+        }
+    }
+}
+
+@MainActor
+extension IQRefreshAbstractWrapper {
+
+    public func addStateObserver(identifier: AnyHashable,
+                                 observer: (@Sendable @escaping @MainActor (_ result: RefreshingState) -> Void)) {
+        stateObservers[identifier] = observer
+    }
+
+    public func removeStateObserver(identifier: AnyHashable) {
+        stateObservers[identifier] = nil
+    }
+
+    private func notifyStateUpdate(state: RefreshingState) {
+        for (_, observer) in stateObservers {
+            observer(state)
+        }
     }
 }
 
@@ -107,8 +148,8 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
 extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
     public func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                                 loadingBegin: @escaping @MainActor (Bool) -> Void,
-                                 loadingFinished: @escaping @MainActor (Bool) -> Void) {
+                                 loadingBegin: @Sendable @escaping @MainActor (Bool) -> Void,
+                                 loadingFinished: @Sendable @escaping @MainActor (Bool) -> Void) {
 
         let page: Int
         switch pageOffsetStyle {
@@ -127,7 +168,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
         pullToRefresh.enableLoadMore = false
         loadingBegin(true)
         state = .refreshing
-        loadingObserver?(state)
+        notifyStateUpdate(state: .refreshing)
 
         self.request(page: page, size: pageSize, completion: { [weak self] result in
 
@@ -138,7 +179,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
             loadingFinished(true)
             state = .none
-            loadingObserver?(state)
+            notifyStateUpdate(state: .none)
 
             guard isReallyRefreshing else {
                 return
@@ -147,22 +188,22 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
             switch result {
             case .success(let models):
 
-                if self.pageOffsetStyle == .none {
-                    self.pullToRefresh.enableLoadMore = false
+                if pageOffsetStyle == .none {
+                    pullToRefresh.enableLoadMore = false
                 } else {
-                    self.pullToRefresh.enableLoadMore = (models.count == self.pageSize)
+                    pullToRefresh.enableLoadMore = (models.count == self.pageSize)
                 }
                 self.models = models
             case .failure(let error):
-                self.modelsUpdatedObserver?(.failure(error))
+                notifyModelsUpdate(update: .failure(error))
             }
         })
     }
 
     // swiftlint:disable cyclomatic_complexity
     public func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
-                                  loadingBegin: @escaping @MainActor (Bool) -> Void,
-                                  loadingFinished: @escaping @MainActor (Bool) -> Void) {
+                                  loadingBegin: @Sendable @escaping @MainActor (Bool) -> Void,
+                                  loadingFinished: @Sendable @escaping @MainActor (Bool) -> Void) {
 
         // If it's not multiple of pageSize then probably we've loaded all records
         guard models.count.isMultiple(of: pageSize) else {
@@ -188,7 +229,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
         loadingBegin(true)
         state = .moreLoading
-        loadingObserver?(state)
+        notifyStateUpdate(state: .moreLoading)
 
         self.request(page: page, size: pageSize, completion: { [weak self] result in
 
@@ -200,7 +241,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
 
             loadingFinished(true)
             state = .none
-            loadingObserver?(state)
+            notifyStateUpdate(state: .none)
 
             guard isReallyMoreLoading else {
                 return
@@ -218,7 +259,7 @@ extension IQRefreshAbstractWrapper: Refreshable, MoreLoadable {
                 }
 
             case .failure(let error):
-                self.modelsUpdatedObserver?(.failure(error))
+                notifyModelsUpdate(update: .failure(error))
             }
         })
     }

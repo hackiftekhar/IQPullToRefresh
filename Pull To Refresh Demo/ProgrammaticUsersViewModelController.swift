@@ -68,8 +68,11 @@ class ProgrammaticUsersViewModelController: UIViewController {
         }
 
         (usersStore.pullToRefresh.loadMoreControl as? UIActivityIndicatorView)?.style = .large
+        addObservers()
+    }
 
-        usersStore.modelsUpdatedObserver = { result in
+    private func addObservers() {
+        usersStore.addModelsUpdatedObserver(identifier: "\(Self.self)") { result in
             switch result {
             case .success:
                 self.refreshUI(animated: true)
@@ -78,7 +81,7 @@ class ProgrammaticUsersViewModelController: UIViewController {
             }
         }
 
-        usersStore.loadingObserver = { result in
+        usersStore.addStateObserver(identifier: "\(Self.self)") { result in
             switch result {
             case .none:
                 print("None")

@@ -30,8 +30,11 @@ class UsersViewModelController: UITableViewController {
         super.viewDidLoad()
 
         (usersStore.pullToRefresh.loadMoreControl as? UIActivityIndicatorView)?.style = .large
+        addObservers()
+    }
 
-        usersStore.modelsUpdatedObserver = { result in
+    private func addObservers() {
+        usersStore.addModelsUpdatedObserver(identifier: "\(Self.self)") { result in
             switch result {
             case .success:
                 self.refreshUI(animated: true)
@@ -40,7 +43,7 @@ class UsersViewModelController: UITableViewController {
             }
         }
 
-        usersStore.loadingObserver = { result in
+        usersStore.addStateObserver(identifier: "\(Self.self)") { result in
             switch result {
             case .none:
                 print("None")

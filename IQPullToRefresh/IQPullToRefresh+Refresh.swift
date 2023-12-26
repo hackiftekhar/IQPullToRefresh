@@ -27,8 +27,8 @@ public protocol Refreshable: AnyObject {
 
     @MainActor
     func refreshTriggered(type: IQPullToRefresh.RefreshType,
-                          loadingBegin: @escaping @MainActor (_ success: Bool) -> Void,
-                          loadingFinished: @escaping @MainActor (_ success: Bool) -> Void)
+                          loadingBegin: @Sendable @escaping @MainActor (_ success: Bool) -> Void,
+                          loadingFinished: @Sendable @escaping @MainActor (_ success: Bool) -> Void)
 }
 
 @MainActor
