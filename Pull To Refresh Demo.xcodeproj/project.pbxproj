@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1205659DECDE9C1F0F90D5D6 /* Pods_Pull_To_Refresh_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */; };
+		98B20EF52B453D55005A0577 /* UserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B20EF32B453D55005A0577 /* UserCollectionViewCell.swift */; };
+		98B20EF62B453D55005A0577 /* UserCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B20EF42B453D55005A0577 /* UserCollectionViewCell.xib */; };
+		98B20EF82B4558CC005A0577 /* HorizontalCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B20EF72B4558CC005A0577 /* HorizontalCollectionViewController.swift */; };
 		C01A6B7D2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A6B7C2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift */; };
 		C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */; };
 		C0A2702525D5656700363622 /* CookingRefresher.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A2701825D5656700363622 /* CookingRefresher.xcassets */; };
@@ -43,6 +46,9 @@
 /* Begin PBXFileReference section */
 		1CEC23AB2A6FD521CAD011E7 /* Pods_Pull_To_Refresh_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pull_To_Refresh_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B487378FCBB92DCC128E71A /* Pods-Pull To Refresh Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pull To Refresh Demo.release.xcconfig"; path = "Target Support Files/Pods-Pull To Refresh Demo/Pods-Pull To Refresh Demo.release.xcconfig"; sourceTree = "<group>"; };
+		98B20EF32B453D55005A0577 /* UserCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionViewCell.swift; sourceTree = "<group>"; };
+		98B20EF42B453D55005A0577 /* UserCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCollectionViewCell.xib; sourceTree = "<group>"; };
+		98B20EF72B4558CC005A0577 /* HorizontalCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCollectionViewController.swift; sourceTree = "<group>"; };
 		BF6BC0D7A19B454002BE4590 /* Pods-Pull To Refresh Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pull To Refresh Demo.debug.xcconfig"; path = "Target Support Files/Pods-Pull To Refresh Demo/Pods-Pull To Refresh Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		C01A6B7C2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammaticUsersViewModelController.swift; sourceTree = "<group>"; };
 		C0A2701625D5656700363622 /* CAKeyframeAnimation+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAKeyframeAnimation+Extensions.swift"; sourceTree = "<group>"; };
@@ -99,6 +105,15 @@
 				7B487378FCBB92DCC128E71A /* Pods-Pull To Refresh Demo.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		98B20EF22B453D13005A0577 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				98B20EF32B453D55005A0577 /* UserCollectionViewCell.swift */,
+				98B20EF42B453D55005A0577 /* UserCollectionViewCell.xib */,
+			);
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		ABCDCCE4F21A1C5F76CF9184 /* Frameworks */ = {
@@ -176,6 +191,7 @@
 				C0C12E6F25D11F5100140363 /* UsersViewController.swift */,
 				C0FD98E029780A5000420D64 /* UsersViewModelController.swift */,
 				C01A6B7C2A1363FD00A2D1D8 /* ProgrammaticUsersViewModelController.swift */,
+				98B20EF72B4558CC005A0577 /* HorizontalCollectionViewController.swift */,
 				C0C12E2D25D11D5300140363 /* Main.storyboard */,
 				C0C12E3025D11D5300140363 /* Assets.xcassets */,
 				C0C12E3225D11D5300140363 /* LaunchScreen.storyboard */,
@@ -206,6 +222,7 @@
 		C0C12E5D25D11DDA00140363 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				98B20EF22B453D13005A0577 /* CollectionViewCell */,
 				C0C12E5E25D11DDA00140363 /* UserCell.swift */,
 				C0C12E9A25D1210700140363 /* UserCell.xib */,
 			);
@@ -309,6 +326,7 @@
 				C0A2702725D5656700363622 /* carrot-path-only.svg in Resources */,
 				C0C12E3425D11D5300140363 /* LaunchScreen.storyboard in Resources */,
 				C0A2702825D5656700363622 /* SoupView.xib in Resources */,
+				98B20EF62B453D55005A0577 /* UserCollectionViewCell.xib in Resources */,
 				C0C12E3125D11D5300140363 /* Assets.xcassets in Resources */,
 				C0A2702A25D5656700363622 /* potato-path-only.svg in Resources */,
 				C0A2702B25D5656700363622 /* cover-path-only.svg in Resources */,
@@ -384,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0FD98E129780A5000420D64 /* UsersViewModelController.swift in Sources */,
+				98B20EF82B4558CC005A0577 /* HorizontalCollectionViewController.swift in Sources */,
 				C0C12E5B25D11DD600140363 /* IQAPIClient+APIPath.swift in Sources */,
 				C0A2702C25D5656700363622 /* PullToMakeSoup.swift in Sources */,
 				C0C12E5F25D11DDA00140363 /* UserCell.swift in Sources */,
@@ -395,6 +414,7 @@
 				C0C12E7025D11F5100140363 /* UsersViewController.swift in Sources */,
 				C0C12E2A25D11D5300140363 /* SceneDelegate.swift in Sources */,
 				C0A2702425D5656700363622 /* CAKeyframeAnimation+Extensions.swift in Sources */,
+				98B20EF52B453D55005A0577 /* UserCollectionViewCell.swift in Sources */,
 				C0C12EE825D153DB00140363 /* ProgressPullToRefresh.swift in Sources */,
 				C0D1619B25D3B66C0045BF5C /* CustomPullToRefresh.swift in Sources */,
 				C0FD98DD2977FFBC00420D64 /* UsersStore.swift in Sources */,
@@ -476,7 +496,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -531,7 +551,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

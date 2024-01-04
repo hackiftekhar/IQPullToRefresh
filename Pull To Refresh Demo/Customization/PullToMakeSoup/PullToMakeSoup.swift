@@ -42,7 +42,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         return refreshView
     }
 
-    var refreshHeight: CGFloat {
+    var refreshLength: CGFloat {
         return 130
     }
 
@@ -65,7 +65,7 @@ class SoupView: UIView, IQAnimatableRefresh {
     }
 
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: refreshHeight)
+        return CGSize(width: UIScreen.main.bounds.width, height: refreshLength)
     }
 
     override func layoutSubviews() {
@@ -106,7 +106,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         let centerX = frame.size.width / 2
 
         // Circle
-        circle.center = CGPoint(x: centerX, y: refreshHeight / 2)
+        circle.center = CGPoint(x: centerX, y: refreshLength / 2)
 
         // Carrot
         carrot.removeAllAnimations()
@@ -389,7 +389,7 @@ class SoupView: UIView, IQAnimatableRefresh {
         circle.alpha = progress
         circle.transform = CGAffineTransform.identity.scaledBy(x: speededProgress, y: speededProgress)
         circle.center = CGPoint(x: frame.size.width / 2,
-                                y: refreshHeight / 2 + refreshHeight - (refreshHeight * progress))
+                                y: refreshLength / 2 + refreshLength - (refreshLength * progress))
 
         func progressWithOffset(_ offset: Double, _ progress: Double) -> Double {
             return progress < offset ? 0 : (progress - offset) * 1/(1 - offset)

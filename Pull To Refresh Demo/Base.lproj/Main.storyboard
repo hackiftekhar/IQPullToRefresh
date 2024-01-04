@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="E6y-8w-EbI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="E6y-8w-EbI">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -184,6 +185,64 @@
             </objects>
             <point key="canvasLocation" x="2042" y="644"/>
         </scene>
+        <!--Horizontal Scroll-->
+        <scene sceneID="REe-rL-R4C">
+            <objects>
+                <navigationController id="9cA-lP-idr" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Horizontal Scroll" id="eww-wc-0cG"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="560-pg-wgb">
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="TwY-Pn-k6p" kind="relationship" relationship="rootViewController" id="vhO-RY-S2u"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wZP-PG-0UC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1151" y="1345"/>
+        </scene>
+        <!--Horizontal Scroll Support-->
+        <scene sceneID="SX5-BE-3X3">
+            <objects>
+                <viewController id="TwY-Pn-k6p" customClass="HorizontalCollectionViewController" customModule="Pull_To_Refresh_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fA4-3h-YQ9">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VkX-dR-Dnc">
+                                <rect key="frame" x="0.0" y="92" width="414" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="pmj-cG-ysF"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="XwK-wa-Ck2">
+                                    <size key="itemSize" width="80" height="80"/>
+                                    <size key="estimatedItemSize" width="80" height="80"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bxj-s6-S0e"/>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Bxj-s6-S0e" firstAttribute="trailing" secondItem="VkX-dR-Dnc" secondAttribute="trailing" id="DHc-yR-rlD"/>
+                            <constraint firstItem="VkX-dR-Dnc" firstAttribute="leading" secondItem="Bxj-s6-S0e" secondAttribute="leading" id="vqT-5q-5Yh"/>
+                            <constraint firstItem="VkX-dR-Dnc" firstAttribute="top" secondItem="Bxj-s6-S0e" secondAttribute="top" id="zZR-qD-rP8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Horizontal Scroll Support" id="idm-6r-5s8"/>
+                    <connections>
+                        <outlet property="collectionView" destination="VkX-dR-Dnc" id="0lz-As-0Z3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qH3-ab-r10" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2041" y="1345"/>
+        </scene>
         <!--View Model Users-->
         <scene sceneID="Ojl-wY-4DC">
             <objects>
@@ -222,6 +281,7 @@
             <objects>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="E6y-8w-EbI" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="CIZ-eu-YdS"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IxE-0z-OTk">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -230,6 +290,7 @@
                     <connections>
                         <segue destination="AJg-Gf-kuB" kind="relationship" relationship="viewControllers" id="C3H-ok-pCx"/>
                         <segue destination="O11-vv-UFc" kind="relationship" relationship="viewControllers" id="ehH-7D-TgO"/>
+                        <segue destination="9cA-lP-idr" kind="relationship" relationship="viewControllers" id="Wka-fS-Oid"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="crA-Pp-D6E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -240,6 +301,9 @@
     <resources>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGroupedBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

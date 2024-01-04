@@ -10,7 +10,7 @@ import IQPullToRefresh
 
 class CustomPullToRefresh: UIView, IQAnimatableRefresh {
 
-    var refreshHeight: CGFloat {
+    var refreshLength: CGFloat {
         return 80
     }
 
@@ -110,7 +110,7 @@ class CustomPullToRefresh: UIView, IQAnimatableRefresh {
 
     override var intrinsicContentSize: CGSize {
         var intrinsicContentSize = super.intrinsicContentSize
-        intrinsicContentSize.height = refreshHeight
+        intrinsicContentSize.height = refreshLength
         return intrinsicContentSize
     }
 }

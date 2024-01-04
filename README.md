@@ -312,7 +312,7 @@ This is all possible with implementing IQAnimatableRefresh protocol to your own 
 - The class must implement 2 variables
 
 ```swift
-var refreshHeight: CGFloat { get }	// Height of your refresh view
+var refreshLength: CGFloat { get }	// Height of your refresh view. Width in case of horizontal scroll 
 var refreshState: IQAnimatableRefreshState { get set } //State handling
 ```
 
@@ -330,7 +330,7 @@ public enum IQAnimatableRefreshState: Equatable {
 #### Protocol Adoption
 ```swift
 class CustomPullToRefresh: UILabel, IQAnimatableRefresh {
-    var refreshHeight: CGFloat {
+    var refreshLength: CGFloat {
         return 80
     }
     var refreshState: IQAnimatableRefreshState = .none {

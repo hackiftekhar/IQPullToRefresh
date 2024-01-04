@@ -18,7 +18,7 @@ class PreloadActivityIndicatorView: UIActivityIndicatorView, IQAnimatableRefresh
         return 500
     }
 
-    var refreshHeight: CGFloat {
+    var refreshLength: CGFloat {
         return 40
     }
 

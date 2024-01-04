@@ -30,14 +30,14 @@ public enum IQAnimatableRefreshState: Equatable, Sendable {
     case refreshing         // Triggered refreshing
 }
 
-public enum IQRefreshTriggerMode: Sendable {
+@objc public enum IQRefreshTriggerMode: Int, Sendable {
 
     case userInteraction    // Trigger when user manually pull (load more)
 
     case scrollLimitReached // Trigger when the scrollView reach at the end (load more)
 }
 
-public enum IQRefreshTriggerStyle: Equatable, Sendable {
+@objc public enum IQRefreshTriggerStyle: Int, Equatable, Sendable {
 
     case touchRelease   // Trigger when user pull 100% and then release touch
 
@@ -61,12 +61,20 @@ public protocol IQAnimatableRefresh where Self: UIView {
 
     // Height of the refreshControl
     @MainActor
+    @available(*, deprecated, message: "use 'refreshLength' instead")
     var refreshHeight: CGFloat { get }
+
+    @MainActor
+    var refreshLength: CGFloat { get }
 
     // Changes of the refreshControl state
     // You must implement didSet and do your UI updates based on the state
     @MainActor
     var refreshState: IQAnimatableRefreshState { get set }
+}
+
+public extension IQAnimatableRefresh {
+    var refreshHeight: CGFloat { refreshLength }
 }
 
 @MainActor

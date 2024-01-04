@@ -61,7 +61,11 @@ public extension IQPullToRefresh {
             refreshControl.refreshState = .refreshing
         } else {
             var contentInset: UIEdgeInsets = scrollView.contentInset
-            contentInset.top += refreshControl.refreshHeight
+            if scrollDirection == .horizontal {
+                contentInset.left += refreshControl.refreshLength
+            } else {
+                contentInset.top += refreshControl.refreshLength
+            }
 
             refreshControl.refreshState = .refreshing
 
@@ -81,7 +85,11 @@ public extension IQPullToRefresh {
             refreshControl.refreshState = .none
         } else {
             var contentInset: UIEdgeInsets = scrollView.contentInset
-            contentInset.top -= refreshControl.refreshHeight
+            if scrollDirection == .horizontal {
+                contentInset.left -= refreshControl.refreshLength
+            } else {
+                contentInset.top -= refreshControl.refreshLength
+            }
 
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset

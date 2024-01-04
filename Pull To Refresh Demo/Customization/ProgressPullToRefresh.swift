@@ -10,7 +10,7 @@ import IQPullToRefresh
 
 class ProgressPullToRefresh: UILabel, IQAnimatableRefresh {
 
-    var refreshHeight: CGFloat {
+    var refreshLength: CGFloat {
         return 100
     }
 
@@ -61,6 +61,6 @@ class ProgressPullToRefresh: UILabel, IQAnimatableRefresh {
     }
 
     override var intrinsicContentSize: CGSize {
-        CGSize(width: 200, height: refreshHeight)
+        CGSize(width: 200, height: refreshLength)
     }
 }

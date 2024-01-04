@@ -54,7 +54,7 @@ extension UIRefreshControl: IQAnimatableRefresh {
         }
     }
 
-    public var refreshHeight: CGFloat {
+    public var refreshLength: CGFloat {
         return 170
     }
 
