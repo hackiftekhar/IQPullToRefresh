@@ -71,7 +71,7 @@ extension UIRefreshControl: IQAnimatableRefresh {
 
             objc_setAssociatedObject(self, &AssociatedKeys.state, newValue,
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
+            guard window != nil else { return }
             switch newValue {
             case .unknown, .none:
                 if isRefreshing {
