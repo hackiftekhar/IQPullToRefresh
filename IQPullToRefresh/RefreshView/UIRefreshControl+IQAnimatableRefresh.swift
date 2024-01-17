@@ -76,12 +76,14 @@ extension UIRefreshControl: IQAnimatableRefresh {
             case .unknown, .none:
                 if isRefreshing {
                     endRefreshing()
+                    self.superview?.layoutIfNeeded()
                 }
             case .pulling, .eligible:
                 break
             case .refreshing:
                 if !isRefreshing {
                     beginRefreshing()
+                    self.superview?.layoutIfNeeded()
                 }
             }
         }
@@ -93,6 +95,7 @@ extension UIRefreshControl: IQAnimatableRefresh {
             switch refreshState {
             case .unknown, .none:
                 endRefreshing()
+                self.superview?.layoutIfNeeded()
             case .pulling, .eligible:
                 break
             case .refreshing:
@@ -105,6 +108,7 @@ extension UIRefreshControl: IQAnimatableRefresh {
                 // end refreshing and begin refreshing again to restart loading indicator animation.
                 endRefreshing()
                 beginRefreshing()
+                self.superview?.layoutIfNeeded()
             }
         }
     }
