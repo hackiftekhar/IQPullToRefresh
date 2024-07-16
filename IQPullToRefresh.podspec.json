@@ -1,9 +1,9 @@
 {
   "name": "IQPullToRefresh",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "source": {
     "git": "https://github.com/hackiftekhar/IQPullToRefresh.git",
-    "tag": "3.0.1"
+    "tag": "3.0.2"
   },
   "summary": "Easy pull to refresh and Load more handling with custom implementation support",
   "homepage": "https://github.com/hackiftekhar/IQPullToRefresh",
