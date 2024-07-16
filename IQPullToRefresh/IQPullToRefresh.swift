@@ -29,8 +29,8 @@ public final class IQPullToRefresh: NSObject {
 
     public private(set) var scrollView: UIScrollView
 
-    public weak var refresher: Refreshable?
-    public weak var moreLoader: MoreLoadable?
+    public weak var refresher: (any Refreshable)?
+    public weak var moreLoader: (any MoreLoadable)?
 
     internal let scrollDirection: UICollectionView.ScrollDirection
 
@@ -54,14 +54,15 @@ public final class IQPullToRefresh: NSObject {
                     scrollView.insertSubview(refreshControl, at: 0)
                     refreshControl.translatesAutoresizingMaskIntoConstraints = false
 
+                    let refreshLength = refreshControl.refreshLength
                     if scrollDirection == .horizontal {
                         refreshControl.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor).isActive = true
                         refreshControl.centerXAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor,
-                                                                constant: refreshControl.refreshLength/2).isActive = true
+                                                                constant: refreshLength/2).isActive = true
                     } else {
                         refreshControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
                         refreshControl.centerYAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor,
-                                                                constant: refreshControl.refreshLength/2).isActive = true
+                                                                constant: refreshLength/2).isActive = true
                     }
 
                     if !isRefreshing {
@@ -81,7 +82,7 @@ public final class IQPullToRefresh: NSObject {
         }
     }
 
-    public var refreshControl: IQAnimatableRefresh {
+    public var refreshControl: any IQAnimatableRefresh {
         didSet {
             guard enablePullToRefresh else {
                 return
@@ -149,7 +150,7 @@ public final class IQPullToRefresh: NSObject {
         }
     }
 
-    public var loadMoreControl: IQAnimatableRefresh {
+    public var loadMoreControl: any IQAnimatableRefresh {
         didSet {
             guard enableLoadMore else {
                 return
@@ -187,8 +188,8 @@ public final class IQPullToRefresh: NSObject {
     }
 
     public init(scrollView: UIScrollView,
-                refresher: Refreshable? = nil,
-                moreLoader: MoreLoadable? = nil) {
+                refresher: (any Refreshable)? = nil,
+                moreLoader: (any MoreLoadable)? = nil) {
 
         self.scrollView = scrollView
         self.refresher = refresher

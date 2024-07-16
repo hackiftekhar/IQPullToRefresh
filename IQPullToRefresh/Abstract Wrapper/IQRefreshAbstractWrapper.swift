@@ -68,7 +68,7 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
 
     // swiftlint:disable line_length
     private var stateObservers: [AnyHashable: @Sendable @MainActor (_ result: RefreshingState) -> Void] = [:]
-    private var modelsUpdateObservers: [AnyHashable: @Sendable @MainActor (_ result: Swift.Result<[T], Error>) -> Void] = [:]
+    private var modelsUpdateObservers: [AnyHashable: @Sendable @MainActor (_ result: Swift.Result<[T], any Error>) -> Void] = [:]
     // swiftlint:enable line_length
 
     public var state: RefreshingState = .none
@@ -99,7 +99,8 @@ open class IQRefreshAbstractWrapper<T: Sendable> {
         pullToRefresh = IQPullToRefresh(scrollView: scrollView)
     }
 
-    open func request(page: Int, size: Int, completion: @Sendable @escaping @MainActor (Result<[T], Error>) -> Void) {
+    open func request(page: Int, size: Int,
+                      completion: @Sendable @escaping @MainActor (Result<[T], any Error>) -> Void) {
         fatalError("\(#function) has not been implemented by \(Self.self)")
     }
 }
@@ -109,7 +110,7 @@ extension IQRefreshAbstractWrapper {
 
     // swiftlint:disable line_length
     public func addModelsUpdatedObserver(identifier: AnyHashable,
-                                         observer: (@Sendable @escaping @MainActor (_ result: Swift.Result<[T], Error>) -> Void)) {
+                                         observer: (@Sendable @escaping @MainActor (_ result: Swift.Result<[T], any Error>) -> Void)) {
         modelsUpdateObservers[identifier] = observer
     }
     // swiftlint:enable line_length
@@ -118,7 +119,7 @@ extension IQRefreshAbstractWrapper {
         modelsUpdateObservers[identifier] = nil
     }
 
-    private func notifyModelsUpdate(update: Swift.Result<[T], Error>) {
+    private func notifyModelsUpdate(update: Swift.Result<[T], any Error>) {
         for (_, observer) in modelsUpdateObservers {
             observer(update)
         }
