@@ -5,18 +5,21 @@ import PackageDescription
 let package = Package(
     name: "IQPullToRefresh",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v13)
     ],
     products: [
-       .library(name: "IQPullToRefresh", targets: ["IQPullToRefresh"])
-   ],
-   targets: [
-       .target(
-           name: "IQPullToRefresh",
-           path: "IQPullToRefresh",
-           resources: [
-               .copy("PrivacyInfo.xcprivacy")
-           ]
-       )
-   ]
+        .library(
+            name: "IQPullToRefresh",
+            targets: ["IQPullToRefresh"]
+        )
+    ],
+    targets: [
+        .target(
+            name: "IQPullToRefresh",
+            path: "IQPullToRefresh",
+            resources: [
+                .copy("PrivacyInfo.xcprivacy")
+            ]
+        )
+    ]
 )
