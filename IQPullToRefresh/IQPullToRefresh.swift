@@ -238,9 +238,13 @@ public final class IQPullToRefresh: NSObject {
 extension IQPullToRefresh {
 
     func registerContentOffsetChangeObserver() {
+
         contentOffsetObserver = scrollView.observe(\.contentOffset, changeHandler: { [weak self] _, _ in
             guard let self = self else { return }
-            handleContentOffsetChange()
+
+            MainActor.assumeIsolatedBackDeployed {
+                self.handleContentOffsetChange()
+            }
         })
     }
 

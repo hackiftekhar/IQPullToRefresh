@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="E6y-8w-EbI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23077.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="E6y-8w-EbI">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23068.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,24 +30,24 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Users" id="kDR-sT-hYH">
                         <leftBarButtonItems>
-                            <barButtonItem style="plain" systemItem="refresh" id="dJa-qr-FL0">
+                            <barButtonItem systemItem="refresh" id="dJa-qr-FL0">
                                 <connections>
                                     <action selector="refreshAction:" destination="4ba-jW-s79" id="M1h-DF-vFg"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="stop" id="mP9-sn-bhv">
+                            <barButtonItem systemItem="stop" id="mP9-sn-bhv">
                                 <connections>
                                     <action selector="stopRefreshAction:" destination="4ba-jW-s79" id="T46-KN-ewg"/>
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
                         <rightBarButtonItems>
-                            <barButtonItem title="Load More" style="plain" id="oKa-48-Kw7">
+                            <barButtonItem title="Load More" id="oKa-48-Kw7">
                                 <connections>
                                     <action selector="loadMoreAction:" destination="4ba-jW-s79" id="np4-lI-BMs"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="stop" id="s9Y-JZ-uG2">
+                            <barButtonItem systemItem="stop" id="s9Y-JZ-uG2">
                                 <connections>
                                     <action selector="stopLoadMoreAction:" destination="4ba-jW-s79" id="WCP-9s-fei"/>
                                 </connections>
@@ -135,24 +135,24 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Users" id="KNc-f7-Sfp">
                         <leftBarButtonItems>
-                            <barButtonItem style="plain" systemItem="refresh" id="WSd-BI-Era">
+                            <barButtonItem systemItem="refresh" id="WSd-BI-Era">
                                 <connections>
                                     <action selector="refreshAction:" destination="hml-5X-Rcf" id="xxA-64-6Rk"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="stop" id="q7P-qU-2Ef">
+                            <barButtonItem systemItem="stop" id="q7P-qU-2Ef">
                                 <connections>
                                     <action selector="stopRefreshAction:" destination="hml-5X-Rcf" id="aNE-hk-8CG"/>
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
                         <rightBarButtonItems>
-                            <barButtonItem title="Load More" style="plain" id="cEw-kw-god">
+                            <barButtonItem title="Load More" id="cEw-kw-god">
                                 <connections>
                                     <action selector="loadMoreAction:" destination="hml-5X-Rcf" id="230-Hm-Zp1"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="stop" id="b6V-i0-vpt">
+                            <barButtonItem systemItem="stop" id="b6V-i0-vpt">
                                 <connections>
                                     <action selector="stopLoadMoreAction:" destination="hml-5X-Rcf" id="ly4-7t-brJ"/>
                                 </connections>

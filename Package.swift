@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.5
 
 import PackageDescription
 
@@ -13,7 +13,10 @@ let package = Package(
    targets: [
        .target(
            name: "IQPullToRefresh",
-           path: "IQPullToRefresh"
+           path: "IQPullToRefresh",
+           resources: [
+               .copy("PrivacyInfo.xcprivacy")
+           ]
        )
    ]
 )

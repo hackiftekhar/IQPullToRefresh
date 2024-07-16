@@ -25,7 +25,6 @@ import UIKit
 @MainActor
 public protocol MoreLoadable: AnyObject {
 
-    @MainActor
     func loadMoreTriggered(type: IQPullToRefresh.LoadMoreType,
                            loadingBegin: @Sendable @escaping @MainActor (_ success: Bool) -> Void,
                            loadingFinished: @Sendable @escaping @MainActor (_ success: Bool) -> Void)
