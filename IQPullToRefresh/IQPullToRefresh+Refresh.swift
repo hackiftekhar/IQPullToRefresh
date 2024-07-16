@@ -71,6 +71,7 @@ public extension IQPullToRefresh {
 
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset
+                self?.scrollView.layoutIfNeeded()
             }, completion: nil)
         }
     }
@@ -93,6 +94,7 @@ public extension IQPullToRefresh {
 
             UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 self?.scrollView.contentInset = contentInset
+                self?.scrollView.layoutIfNeeded()
             }, completion: nil)
 
             refreshControl.refreshState = .none
