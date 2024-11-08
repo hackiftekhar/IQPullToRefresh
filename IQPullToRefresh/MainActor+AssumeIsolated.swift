@@ -26,15 +26,16 @@ extension MainActor {
     // https://forums.swift.org/t/replacement-for-mainactor-unsafe/65956/2
     @_unavailableFromAsync
     static func assumeIsolatedBackDeployed<T: Sendable>(_ body: @MainActor () throws -> T) rethrows -> T {
-#if swift(>=6)
+#if swift(>=6)  // Xcode 16 and above
         if #available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *) {
             return try assumeIsolated(body)
         }
-#elseif swift(>=5.9)
+#elseif swift(>=5.9) // Xcode 15
         if #available(macOS 14.0, iOS 17.0, watchOS 10.0, tvOS 17.0, *) {
             return try assumeIsolated(body)
         }
 #endif
+        // All other Xcodes
         dispatchPrecondition(condition: .onQueue(.main))
         return try withoutActuallyEscaping(body) { function in
             try unsafeBitCast(function, to: (() throws -> T).self)()
